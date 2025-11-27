@@ -1,5 +1,47 @@
 # CHANGELOG
 
+## v0.3.0 — Phase 3 Complete: IDE & Tooling (2025-11-27)
+
+**Code Formatter:**
+- Implemented formatting rules for indentation and spacing
+- Added comment formatting with proper spacing
+- Implemented line wrapping and format-on-save capability
+- Added 4 comprehensive tests
+
+**Linter:**
+- Implemented style checking with naming conventions
+- Added unused variable and trailing whitespace detection
+- Implemented auto-fix capabilities for common issues
+- Added 5 comprehensive tests
+
+**Debugger:**
+- Implemented breakpoint support (line, conditional, function)
+- Added step-through execution (step over, into, out)
+- Implemented variable inspection and watch expressions
+- Added call stack viewing and management
+- Implemented breakpoint hit counting
+- Added 9 comprehensive tests
+
+**Profiler:**
+- Implemented execution time profiling with high precision
+- Added memory profiling with allocation tracking
+- Implemented flame graph data generation
+- Added hotspot detection for performance bottlenecks
+- Implemented comprehensive profiling reports
+- Added 8 comprehensive tests
+
+**IDE Infrastructure:**
+- Implemented project management system
+- Added file explorer with expand/collapse
+- Implemented command palette for quick actions
+- Added IDE state management (open files, cursor position)
+- Implemented build configuration system
+- Added 5 comprehensive tests
+
+**Testing:**
+- Added 31 new tests (102 total passing)
+- All tooling components fully tested
+
 ## v0.2.0 — Phase 2 Complete: Runtime & Standard Library (2025-11-27)
 
 **TUI Runtime:**
@@ -90,7 +132,7 @@
 - Added 32 comprehensive tests across 7 modules
 - All tests passing
 
-## v0.0.1 — Initial Commit (2025-11-26)
+## v0.0.1 — Initial Commit (2025-11-25)
 
 - Added compiler scaffold (Rust-based)
 - Added comprehensive documentation

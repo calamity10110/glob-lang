@@ -4,6 +4,7 @@ mod lexer;
 mod parser;
 mod runtime;
 mod semantic;
+mod tools;
 
 use clap::{Parser, Subcommand};
 use colored::*;
