@@ -1,0 +1,9 @@
+imp ui
+
+def tree = ^÷^[tree]
+def slider = ^÷^[slider{min=0, max=100, value=50}]
+
+mn main():
+    ui.print(tree)
+    ui.print(slider)
+    print("Basic project initialized!")

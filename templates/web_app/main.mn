@@ -1,0 +1,16 @@
+imp http
+imp ui
+
+asy fetch_users():
+    res = await http.get("https://api.example.com/users")
+    return res.json()
+
+def user_list = ^÷^[table{
+    headers=["ID", "Name", "Email"],
+    rows=[]
+}]
+
+mn main():
+    users = await fetch_users()
+    ui.print(user_list)
+    print("Web app running!")

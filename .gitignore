@@ -1,0 +1,36 @@
+# Build artifacts
+/target
+/build
+*.o
+*.so
+*.dll
+*.exe
+*.wasm
+
+# Secret files (NEVER commit these)
+*.scrt
+secret.def
+.env
+
+# IDE and editor files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+
+# Logs
+*.log
+/logs
+
+# Cache
+/.cache
+/tmp
+
+# Package manager
+/node_modules
+/.npm
+
+# OS-specific
+Thumbs.db

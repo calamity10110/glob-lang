@@ -1,0 +1,103 @@
+# CHANGELOG
+
+## v0.2.0 — Phase 2 Complete: Runtime & Standard Library (2025-11-27)
+
+**TUI Runtime:**
+- Implemented complete TUI component system with crossterm
+- Added Tree, Slider, Button, Text, Progress, Table, Canvas components
+- Added Input and Menu interactive components
+- Implemented VBox and HBox layout system
+- Added ANSI color support (foreground, background, bold)
+
+**HTTP Client:**
+- Implemented reqwest-based HTTP client
+- Added GET, POST, PUT, DELETE methods
+- Implemented custom headers and JSON support
+- Added retry logic with exponential backoff
+- Included HTTPS/TLS support
+
+**File System Operations:**
+- Implemented file reading (string, bytes, lines)
+- Added file writing and appending
+- Implemented directory operations (create, delete, list)
+- Added path manipulation utilities
+- Implemented metadata access
+
+**Database Interface:**
+- Implemented SQLite integration via rusqlite
+- Added query execution with parameter binding
+- Implemented transaction support (begin, commit, rollback)
+- Added table management utilities
+- Implemented type-safe result mapping
+
+**Math & Science Library:**
+- Implemented basic math functions (abs, sqrt, pow, exp, ln, log)
+- Added trigonometric functions (sin, cos, tan, asin, acos, atan, atan2)
+- Added hyperbolic functions (sinh, cosh, tanh)
+- Implemented physics constants and formulas
+- Added chemistry utilities (ideal gas law, pH, molarity)
+- Implemented unit conversions (length, temperature, mass, energy)
+
+**Testing:**
+- Added 38 new tests (70 total passing)
+- All runtime libraries fully tested
+
+## v0.1.0 — Phase 1 Complete: Core Compiler (2025-11-26)
+
+**Lexer:**
+- Implemented complete tokenization for 40+ token types
+- Added UI sprite syntax parsing
+- Implemented scientific notation with units
+- Added multi-line comment support
+
+**Parser:**
+- Implemented full expression parsing with operator precedence
+- Added control flow parsing (if/elif/else, loop, for, while)
+- Implemented function body parsing
+- Added ownership keyword parsing
+- Implemented await expression parsing
+
+**Semantic Analysis:**
+- Built symbol table with multi-scope management
+- Implemented type inference
+- Added ownership validation
+- Implemented async/await validation
+- Added name resolution and dead code detection
+
+**Block Organizer:**
+- Implemented automatic code organization into package blocks
+- Added file writing for imports.imp, definitions.def, async.asy, functions.fnc, custom.cs, main.mn
+- Implemented package.toml generation
+
+**Secret Management:**
+- Implemented .scrt file parsing
+- Added encryption/decryption stubs
+- Implemented secret leakage detection
+- Added auto-redaction for publishing
+
+**Code Generation:**
+- Implemented IR design
+- Added code generation for native targets
+- Implemented function and expression generation
+- Added basic optimizations (constant folding, dead code elimination)
+
+**Async Runtime:**
+- Implemented Tokio integration
+- Added async function execution
+- Implemented task spawning and cancellation
+
+**Testing:**
+- Added 32 comprehensive tests across 7 modules
+- All tests passing
+
+## v0.0.1 — Initial Commit (2025-11-26)
+
+- Added compiler scaffold (Rust-based)
+- Added comprehensive documentation
+- Added example projects
+- Added template projects
+- Added TUI + WebUI design specifications
+- Added FFI integration stubs for Rust, C, Python, JS, TS, SQL
+- Defined package block system
+- Defined secret management system
+- Created initial project structure

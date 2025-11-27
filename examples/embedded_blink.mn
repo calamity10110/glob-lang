@@ -1,0 +1,13 @@
+imp embedded.gpio
+imp embedded.time
+
+asy blink(pin, delay_ms):
+    loop:
+        gpio.high(pin)
+        await time.sleep(delay_ms)
+        gpio.low(pin)
+        await time.sleep(delay_ms)
+
+mn main():
+    gpio.set_mode(5, OUTPUT)
+    await blink(5, 500)

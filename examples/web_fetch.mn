@@ -1,0 +1,9 @@
+imp http
+
+asy fetch_data(url):
+    res = await http.get(url)
+    return res.json()
+
+mn main():
+    data = await fetch_data("https://api.example.com/users")
+    print("Fetched data:", data)

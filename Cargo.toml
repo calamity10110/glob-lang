@@ -1,0 +1,50 @@
+[package]
+name = "universal-lang"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+# Lexer and parser
+logos = "0.13"
+pest = "2.7"
+pest_derive = "2.7"
+
+# AST and code generation
+serde = { version = "1.0", features = ["derive"] }
+serde_json = "1.0"
+
+# Async runtime
+tokio = { version = "1.35", features = ["full"] }
+async-trait = "0.1"
+
+# FFI support
+libloading = "0.8"
+
+# CLI
+clap = { version = "4.4", features = ["derive"] }
+colored = "2.1"
+
+# Error handling
+anyhow = "1.0"
+thiserror = "1.0"
+
+# TUI components
+crossterm = "0.27"
+unicode-width = "0.1"
+
+# HTTP client
+reqwest = { version = "0.11", features = ["json", "blocking"] }
+
+# Database
+rusqlite = { version = "0.30", features = ["bundled"] }
+
+# Math and science
+num-traits = "0.2"
+num-complex = "0.4"
+
+[dev-dependencies]
+criterion = "0.5"
+
+[[bin]]
+name = "ulc"
+path = "src/main.rs"
