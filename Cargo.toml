@@ -1,10 +1,16 @@
 [package]
-name = "universal-lang"
-version = "0.1.0"
+name = "glob-lang"
+version = "0.10.0"
 edition = "2021"
+authors = ["GLOB Contributors"]
+description = "GLOB - Global Language for Optimized Building"
+license = "MIT"
+repository = "https://github.com/glob-lang/glob"
+keywords = ["compiler", "programming-language", "multi-paradigm", "async", "scientific"]
+categories = ["compilers", "development-tools"]
 
 [lib]
-name = "universal_lang"
+name = "glob_lang"
 path = "src/lib.rs"
 
 [dependencies]
@@ -50,5 +56,5 @@ num-complex = "0.4"
 criterion = "0.5"
 
 [[bin]]
-name = "ulc"
+name = "glob"
 path = "src/main.rs"
