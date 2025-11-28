@@ -25,6 +25,10 @@ pub enum Statement {
     Main {
         body: Vec<Statement>,
     },
+    Assignment {
+        name: String,
+        value: Expression,
+    },
     Expression(Expression),
     Return(Option<Expression>),
     If {

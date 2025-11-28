@@ -164,6 +164,10 @@ impl CodeGenerator {
             Statement::Continue => {
                 self.emit_line("continue;");
             }
+            Statement::Assignment { name, value } => {
+                let value_code = self.generate_expression(value)?;
+                self.emit_line(&format!("{} = {};", name, value_code));
+            }
             Statement::Expression(expr) => {
                 let expr_code = self.generate_expression(expr)?;
                 self.emit_line(&format!("{};", expr_code));

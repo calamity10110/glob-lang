@@ -376,6 +376,28 @@ impl Parser {
     }
 
     fn parse_expression_statement(&mut self) -> Result<Statement, String> {
+        // Check if this is an assignment (identifier = expression)
+        if let Token::Identifier(name) = self.current_token() {
+            let var_name = name.clone();
+            let next_pos = self.position + 1;
+
+            // Look ahead to see if next token is '='
+            if next_pos < self.tokens.len() && self.tokens[next_pos] == Token::Equal {
+                // This is an assignment
+                self.advance(); // Skip identifier
+                self.advance(); // Skip '='
+
+                let value = self.parse_expression()?;
+                self.skip_newlines();
+
+                return Ok(Statement::Assignment {
+                    name: var_name,
+                    value,
+                });
+            }
+        }
+
+        // Otherwise, parse as expression statement
         let expr = self.parse_expression()?;
         self.skip_newlines();
         Ok(Statement::Expression(expr))

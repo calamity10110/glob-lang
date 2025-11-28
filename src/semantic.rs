@@ -236,6 +236,14 @@ impl SemanticAnalyzer {
                     let _return_type = self.infer_type(e);
                 }
             }
+            Statement::Assignment { name, value } => {
+                // Check if variable exists
+                if self.symbol_table.lookup(name).is_none() {
+                    self.errors
+                        .push(format!("Undefined variable '{}' in assignment", name));
+                }
+                let _value_type = self.infer_type(value);
+            }
             Statement::Expression(expr) => {
                 let _expr_type = self.infer_type(expr);
             }
