@@ -9,11 +9,12 @@
 1. [Introduction](#introduction)
 2. [The Block System](#the-block-system)
 3. [File Organization](#file-organization)
-4. [Package Structure](#package-structure)
-5. [Secret Management](#secret-management)
-6. [Development Workflow](#development-workflow)
-7. [Publishing Packages](#publishing-packages)
-8. [Examples](#examples)
+4. [New in v0.11.0](#new-in-v0110)
+5. [Package Structure](#package-structure)
+6. [Secret Management](#secret-management)
+7. [Development Workflow](#development-workflow)
+8. [Publishing Packages](#publishing-packages)
+9. [Examples](#examples)
 
 ---
 
@@ -27,7 +28,7 @@ GLOB uses an **automatic code organization system** that splits your code into l
 ✅ **Compiler automatically organizes** your code into structured blocks  
 ✅ **Clean separation** of concerns  
 ✅ **Easy to understand** project structure  
-✅ **Safe secret management** built-in  
+✅ **Safe secret management** built-in
 
 Think of it like having an assistant that automatically organizes your desk!
 
@@ -41,14 +42,14 @@ Blocks are separate files that contain specific types of code. GLOB automaticall
 
 ### The Six Block Types
 
-| Block File | Purpose | Contains |
-|------------|---------|----------|
-| `imports.imp` | Dependencies | All `imp` statements |
-| `definitions.def` | Constants & Types | All `def` statements |
-| `async.asy` | Async Functions | All `asy` functions |
-| `functions.fnc` | Sync Functions | All `fn` functions |
-| `custom.cs` | Foreign Code | All `cs` language blocks |
-| `main.mn` | Entry Point | Only the `mn main()` function |
+| Block File        | Purpose           | Contains                      |
+| ----------------- | ----------------- | ----------------------------- |
+| `imports.imp`     | Dependencies      | All `imp` statements          |
+| `definitions.def` | Constants & Types | All `def` statements          |
+| `async.asy`       | Async Functions   | All `asy` functions           |
+| `functions.fnc`   | Sync Functions    | All `fn` functions            |
+| `custom.cs`       | Foreign Code      | All `cs` language blocks      |
+| `main.mn`         | Entry Point       | Only the `mn main()` function |
 
 ### How It Works
 
@@ -226,6 +227,108 @@ mn main():
 
 ---
 
+## New in v0.11.0
+
+### Flexible Import System
+
+GLOB v0.11.0 introduces multiple equivalent import syntaxes. Choose the style that works best for your project!
+
+**Individual Imports:**
+
+```glob
+imp std.io
+imp python: numpy
+imp rust: tokio
+```
+
+**Grouped Imports:**
+
+```glob
+# Using brackets
+imp [python: (numpy, pandas), std: (io, http)]
+
+# Using braces
+imp {python: {numpy, pandas}, std: {io, http}}
+
+# Using parentheses
+imp (python: (numpy, pandas), std: (io, http))
+```
+
+**Key Feature:** `[]`, `{}`, and `()` are interchangeable!
+
+### Mutability System
+
+Clear distinction between mutable and immutable variables:
+
+**Immutable (Default):**
+
+```glob
+def name = "Alice"      # Cannot be changed
+name = "Bob"            # def is optional
+```
+
+**Mutable (? prefix):**
+
+```glob
+?count = 0              # Can be changed
+?count = ?count + 1     # Modification allowed
+```
+
+**With Type Annotations:**
+
+```glob
+@?int counter = 0
+@?str message = "Hello"
+```
+
+**Global vs Static:**
+
+```glob
+@global ?app_state = {}  # Managed by async functions
+@static cache = {}       # Managed by all functions
+```
+
+### Annotation System
+
+Comprehensive `@` prefix annotations for types, functions, and more:
+
+**Type Annotations:**
+
+```glob
+@int age = 25
+@str name = "Alice"
+@lst numbers = [1, 2, 3]
+@map data = {key: "value"}
+```
+
+**Function Annotations:**
+
+```glob
+@asy fetch_data(url):
+    return await http.get(url)
+
+@fn calculate(x, y):
+    return x + y
+```
+
+**Ownership Annotations:**
+
+```glob
+@ref data      # Borrow
+@own buffer    # Take ownership
+@copy items    # Duplicate
+```
+
+**Statistical Annotations:**
+
+```glob
+average = @mean(numbers)
+total = @sum(values)
+std = @stddev(data)
+```
+
+---
+
 ## Package Structure
 
 ### Package Metadata - `package.toml`
@@ -345,6 +448,7 @@ smtp_password = "email-password-123"
 ```
 
 **Important:**
+
 - ❌ NEVER commit to git
 - ❌ NEVER publish to package registry
 - ✅ Automatically added to `.gitignore`
@@ -363,6 +467,7 @@ def SMTP_PASSWORD = "email-password-123"
 ```
 
 **Important:**
+
 - ❌ NEVER commit to git
 - ❌ NEVER publish
 - ✅ Auto-generated when you run your code
@@ -389,6 +494,7 @@ Public file with placeholders:
 ```
 
 **Important:**
+
 - ✅ Safe to commit to git
 - ✅ Safe to publish
 - ✅ Documents what secrets are needed
@@ -473,6 +579,7 @@ mn main():
 #### 3. Save and Auto-Organize
 
 When you save `main.mn`, GLOB automatically:
+
 - Creates `imports.imp` with your imports
 - Creates `definitions.def` with your constants
 - Creates `functions.fnc` with your functions
@@ -485,6 +592,7 @@ glob run main.mn
 ```
 
 Output:
+
 ```
 Hello, GLOB! World
 ```
@@ -510,6 +618,7 @@ glob watch main.mn
 ```
 
 Now every time you save, GLOB:
+
 1. Re-organizes blocks
 2. Runs linter
 3. Runs tests
@@ -555,8 +664,8 @@ glob add my-awesome-package
 imp my-awesome-package
 
 mn main():
-    result = my-awesome-package.do_something()
-    print(result)
+result = my-awesome-package.do_something()
+print(result)
 \`\`\`
 
 ## Examples
@@ -591,6 +700,7 @@ glob publish
 ### What Gets Published?
 
 ✅ **Included:**
+
 - `imports.imp`
 - `definitions.def`
 - `async.asy`
@@ -603,6 +713,7 @@ glob publish
 - `LICENSE`
 
 ❌ **Excluded:**
+
 - `project.scrt` (secrets)
 - `secret.def` (runtime secrets)
 - `.git/` directory
@@ -640,6 +751,7 @@ mn main():
 ```
 
 After compilation:
+
 ```
 web-api-project/
 ├── imports.imp          # imp std.http
@@ -667,11 +779,11 @@ def DATA_FILE = "data.csv"
 cs python:
     import pandas as pd
     import matplotlib.pyplot as plt
-    
+
     def analyze(filename):
         df = pd.read_csv(filename)
         return df.describe()
-    
+
     def plot(data):
         plt.plot(data)
         plt.savefig('output.png')
@@ -687,6 +799,7 @@ mn main():
 ```
 
 After compilation:
+
 ```
 data-analysis/
 ├── imports.imp          # All imports
@@ -733,19 +846,19 @@ mn main():
 
 ### File Types Summary
 
-| File | Purpose | You Edit? | Published? |
-|------|---------|-----------|------------|
-| `main.mn` (source) | Your code | ✅ Yes | ❌ No |
-| `imports.imp` | Imports | ❌ Auto | ✅ Yes |
-| `definitions.def` | Constants | ❌ Auto | ✅ Yes |
-| `async.asy` | Async functions | ❌ Auto | ✅ Yes |
-| `functions.fnc` | Sync functions | ❌ Auto | ✅ Yes |
-| `custom.cs` | Foreign code | ❌ Auto | ✅ Yes |
-| `main.mn` (cleaned) | Entry point | ❌ Auto | ✅ Yes |
-| `scrt.def` | Secret annotations | ❌ Auto | ✅ Yes |
-| `project.scrt` | Actual secrets | ✅ Yes | ❌ NEVER |
-| `secret.def` | Runtime secrets | ❌ Auto | ❌ NEVER |
-| `package.toml` | Metadata | ✅ Yes | ✅ Yes |
+| File                | Purpose            | You Edit? | Published? |
+| ------------------- | ------------------ | --------- | ---------- |
+| `main.mn` (source)  | Your code          | ✅ Yes    | ❌ No      |
+| `imports.imp`       | Imports            | ❌ Auto   | ✅ Yes     |
+| `definitions.def`   | Constants          | ❌ Auto   | ✅ Yes     |
+| `async.asy`         | Async functions    | ❌ Auto   | ✅ Yes     |
+| `functions.fnc`     | Sync functions     | ❌ Auto   | ✅ Yes     |
+| `custom.cs`         | Foreign code       | ❌ Auto   | ✅ Yes     |
+| `main.mn` (cleaned) | Entry point        | ❌ Auto   | ✅ Yes     |
+| `scrt.def`          | Secret annotations | ❌ Auto   | ✅ Yes     |
+| `project.scrt`      | Actual secrets     | ✅ Yes    | ❌ NEVER   |
+| `secret.def`        | Runtime secrets    | ❌ Auto   | ❌ NEVER   |
+| `package.toml`      | Metadata           | ✅ Yes    | ✅ Yes     |
 
 ### Commands Quick Reference
 

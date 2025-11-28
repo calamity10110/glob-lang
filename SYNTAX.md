@@ -49,45 +49,45 @@ Run it: `glob run hello.mn`
 
 ### Immutable Variables (Default)
 
-```glob
-# Immutable - cannot be changed after creation
+````glob
+# Immutable - cannot be changed after creation (def is optional)
 def name = "Alice"
-def age = 25
+age = 25
 def PI = 3.14159
 
-# This would cause an error:
-# age = 26  # ERROR: Cannot modify immutable variable
-```
 
-### Mutable Variables (? prefix)
+### Mutable Variables (? prefix, def is optional)
 
 ```glob
 # Mutable - can be changed
-?count = 0
+def ?count = 0
 ?total = 100
-?name = "Bob"
 
 # Now we can change them
 ?count = ?count + 1  # OK: count is now 1
 ?total = ?total - 50  # OK: total is now 50
 ?name = "Alice"       # OK: name is now "Alice"
-```
+
+````
 
 ### When to Use Mutable vs Immutable
 
 ```glob
 # Use immutable for constants
 def MAX_USERS = 1000
-def API_URL = "https://api.example.com"
+API_URL = "https://api.example.com"
 
 # Use mutable for counters, accumulators
-?counter = 0
+def ?counter = 0
 ?sum = 0
 
 fn count_items(items):
     ?count = 0
     for item in items:
         ?count = ?count + 1
+    return ?count
+# or
+fn @count(items):
     return ?count
 ```
 
@@ -99,10 +99,15 @@ fn count_items(items):
     users: [],
     sessions: {}
 }
-
+@global @?list(app_state) = {
+    users: [],
+    sessions: {}
+}
 # Static variables (managed by all functions)
 @static cache = {}
+@static cache = {@list(state, state2)}
 @static config = load_config()
+@static config = @list(config, config2)
 
 asy update_state(user):
     # Async functions can modify global state
@@ -433,6 +438,10 @@ result = @signum(10)      # Signum function
         @break
     if skip:
         @continue
+@return:
+     @return(number) in [1, 2, 3, 4, 5].
+     @return(result) in [calculation_fn].
+
 ```
 
 ---
@@ -478,12 +487,13 @@ loop:
 # Own - Transfer ownership
 fn process_data(@own data):
     transform(data)
-    # Caller can't use data anymore
+    return data as @global data
+    # Caller can't use data anymore and data is global owned by variable
 
 # Ref - Borrow reference
 fn read_data(@ref data):
     print(data)
-    # Caller still owns data
+    # data is borrowed, Caller still owns data
 
 # Copy - Explicit duplicate
 fn backup_data(@copy data):
