@@ -1,5 +1,6 @@
 mod advanced;
 mod ast;
+mod autonomous;
 mod compiler;
 mod embedded;
 mod interop;
