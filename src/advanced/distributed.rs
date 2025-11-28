@@ -1,3 +1,4 @@
+#![allow(dead_code)]
 // Distributed runtime for Universal Language
 use std::collections::HashMap;
 use std::sync::{Arc, Mutex};

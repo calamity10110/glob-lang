@@ -1,3 +1,4 @@
+#![allow(dead_code)]
 // Hardware Abstraction Layer (HAL) for Embedded Systems
 
 use std::collections::HashMap;

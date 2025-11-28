@@ -640,7 +640,7 @@ impl Parser {
                 let sprite_content = content.clone();
                 self.advance();
 
-                // Parse sprite content (simplified)
+                // Parser for Universal Languagent (simplified)
                 // Format: sprite_type{prop1=val1, prop2=val2} or just sprite_type
                 let parts: Vec<&str> = sprite_content.splitn(2, '{').collect();
                 let sprite_type = parts[0].to_string();
@@ -764,7 +764,8 @@ mod tests {
 
     #[test]
     fn test_parse_async_function() {
-        let mut lexer = Lexer::new("asy fetch(url):\n    res = await http.get(url)\n    return res.text()");
+        let mut lexer =
+            Lexer::new("asy fetch(url):\n    res = await http.get(url)\n    return res.text()");
         let tokens = lexer.tokenize();
         let mut parser = Parser::new(tokens);
         let program = parser.parse().unwrap();
@@ -810,7 +811,7 @@ mod tests {
                 assert_eq!(name, "slider");
                 // Check if the value is a UiSprite expression
                 match value {
-                    Expression::UiSprite { .. } => {}, // Success
+                    Expression::UiSprite { .. } => {} // Success
                     _ => panic!("Expected UiSprite expression"),
                 }
             }
@@ -820,7 +821,8 @@ mod tests {
 
     #[test]
     fn test_parse_custom_block() {
-        let mut lexer = Lexer::new("cs rust:\n    fn sum(a: i32, b: i32) -> i32 {\n        a + b\n    }");
+        let mut lexer =
+            Lexer::new("cs rust:\n    fn sum(a: i32, b: i32) -> i32 {\n        a + b\n    }");
         let tokens = lexer.tokenize();
         let mut parser = Parser::new(tokens);
         let program = parser.parse().unwrap();
@@ -836,14 +838,19 @@ mod tests {
 
     #[test]
     fn test_parse_if_elif_else() {
-        let mut lexer = Lexer::new("if x > 0:\n    return x\nelif x < 0:\n    return -x\nelse:\n    return 0");
+        let mut lexer =
+            Lexer::new("if x > 0:\n    return x\nelif x < 0:\n    return -x\nelse:\n    return 0");
         let tokens = lexer.tokenize();
         let mut parser = Parser::new(tokens);
         let program = parser.parse().unwrap();
 
         assert_eq!(program.statements.len(), 1);
         match &program.statements[0] {
-            Statement::If { then_body, else_body, .. } => {
+            Statement::If {
+                then_body,
+                else_body,
+                ..
+            } => {
                 assert_eq!(then_body.len(), 1);
                 assert!(else_body.is_some());
             }

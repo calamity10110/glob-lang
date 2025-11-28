@@ -1,3 +1,4 @@
+#![allow(unused_variables)]
 // Automatic Optimization Module
 
 use std::collections::HashMap;

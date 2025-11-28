@@ -1,4 +1,5 @@
-// AI-Powered Code Generation Module
+// AI-Powered#![allow(unused_variables)]
+// AI Code Generation Module
 
 use std::collections::HashMap;
 

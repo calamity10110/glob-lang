@@ -9,7 +9,6 @@
 // - Circuit simulation and wave propagation
 
 use std::f64::consts::PI;
-use std::collections::HashMap;
 
 /// 3D Vector for positions, velocities, forces
 #[derive(Debug, Clone, Copy, PartialEq)]
@@ -209,12 +208,8 @@ pub struct RigidBody {
 impl RigidBody {
     pub fn new(id: usize, position: Vec3, mass: f64) -> Self {
         // Simple inertia tensor for sphere
-        let i = (2.0/5.0) * mass * 1.0 * 1.0; // For radius 1
-        let inertia_tensor = [
-            [i, 0.0, 0.0],
-            [0.0, i, 0.0],
-            [0.0, 0.0, i],
-        ];
+        let i = (2.0 / 5.0) * mass * 1.0 * 1.0; // For radius 1
+        let inertia_tensor = [[i, 0.0, 0.0], [0.0, i, 0.0], [0.0, 0.0, i]];
 
         RigidBody {
             position,
@@ -306,7 +301,11 @@ impl CollisionDetector {
         collisions
     }
 
-    pub fn resolve_collisions(&self, particles: &mut [Particle], collisions: &[(usize, usize, Vec3)]) {
+    pub fn resolve_collisions(
+        &self,
+        particles: &mut [Particle],
+        collisions: &[(usize, usize, Vec3)],
+    ) {
         for &(i, j, ref normal) in collisions {
             let v1 = particles[i].velocity;
             let v2 = particles[j].velocity;
@@ -326,8 +325,7 @@ impl CollisionDetector {
             let restitution = 0.8;
 
             // Calculate impulse scalar
-            let impulse_scalar = -(1.0 + restitution) * vel_along_normal /
-                               (1.0/m1 + 1.0/m2);
+            let impulse_scalar = -(1.0 + restitution) * vel_along_normal / (1.0 / m1 + 1.0 / m2);
 
             // Apply impulse
             let impulse = normal.mul(impulse_scalar);
@@ -424,12 +422,21 @@ impl SPHFluid {
 
                         // Pressure force
                         let pressure_term = (pressure_i + pressure_j) / (2.0 * density_j);
-                        pressure_force = pressure_force.add(&self.spiky_gradient(r).mul(-pressure_term * self.particles[j].mass));
+                        pressure_force = pressure_force.add(
+                            &self
+                                .spiky_gradient(r)
+                                .mul(-pressure_term * self.particles[j].mass),
+                        );
 
                         // Viscosity force
-                        let velocity_diff = self.particles[j].velocity.sub(&self.particles[i].velocity);
-                        let viscosity_term = self.viscosity * self.particles[j].mass * velocity_diff.dot(&r) / (r_mag * r_mag + 0.01 * self.smoothing_length * self.smoothing_length);
-                        viscosity_force = viscosity_force.add(&self.spiky_gradient(r).mul(viscosity_term / density_j));
+                        let velocity_diff =
+                            self.particles[j].velocity.sub(&self.particles[i].velocity);
+                        let viscosity_term =
+                            self.viscosity * self.particles[j].mass * velocity_diff.dot(&r)
+                                / (r_mag * r_mag
+                                    + 0.01 * self.smoothing_length * self.smoothing_length);
+                        viscosity_force = viscosity_force
+                            .add(&self.spiky_gradient(r).mul(viscosity_term / density_j));
                     }
                 }
             }
@@ -458,7 +465,7 @@ impl SPHFluid {
 
 /// Electromagnetic Field Simulator
 pub struct ElectromagneticField {
-    charges: Vec<(Vec3, f64)>, // Position, charge
+    charges: Vec<(Vec3, f64)>,   // Position, charge
     currents: Vec<(Vec3, Vec3)>, // Position, current vector
 }
 
@@ -554,7 +561,9 @@ impl PhysicsEngine {
     }
 
     pub fn add_fluid_particle(&mut self, position: Vec3) -> Option<usize> {
-        self.fluid_simulator.as_mut().map(|fluid| fluid.add_particle(position))
+        self.fluid_simulator
+            .as_mut()
+            .map(|fluid| fluid.add_particle(position))
     }
 
     pub fn add_charge(&mut self, position: Vec3, charge: f64) {
@@ -585,10 +594,8 @@ impl PhysicsEngine {
         let particles = self.particle_system.get_particles();
         self.collision_detector.broad_phase(particles);
         let collisions = self.collision_detector.narrow_phase(particles);
-        self.collision_detector.resolve_collisions(
-            &mut self.particle_system.particles,
-            &collisions
-        );
+        self.collision_detector
+            .resolve_collisions(&mut self.particle_system.particles, &collisions);
 
         self.time += dt;
     }

@@ -1,5 +1,5 @@
 // Database interface (SQLite)
-use rusqlite::{params, Connection, Row, Statement};
+use rusqlite::{Connection, Row};
 use std::collections::HashMap;
 
 pub struct Database {

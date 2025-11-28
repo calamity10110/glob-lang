@@ -7,9 +7,8 @@
 // - Thermodynamics calculations (enthalpy, entropy, Gibbs free energy)
 // - Phase equilibrium and electrochemical calculations
 
-use std::collections::HashMap;
-use std::f64::consts::PI;
 use super::physics::Vec3;
+use std::collections::HashMap;
 
 /// Chemical Element with properties
 #[derive(Debug, Clone)]
@@ -26,17 +25,17 @@ impl Element {
     pub fn new(symbol: &str, name: &str, atomic_number: u8, atomic_mass: f64) -> Self {
         // Simplified electronegativity and radius values
         let (electronegativity, covalent_radius) = match atomic_number {
-            1 => (2.20, 0.31),   // H
-            6 => (2.55, 0.76),   // C
-            7 => (3.04, 0.71),   // N
-            8 => (3.44, 0.66),   // O
-            9 => (3.98, 0.57),   // F
-            11 => (0.93, 1.55),  // Na
-            12 => (1.31, 1.39),  // Mg
-            15 => (2.19, 1.07),  // P
-            16 => (2.58, 1.05),  // S
-            17 => (3.16, 1.02),  // Cl
-            _ => (0.0, 1.0),      // Default
+            1 => (2.20, 0.31),  // H
+            6 => (2.55, 0.76),  // C
+            7 => (3.04, 0.71),  // N
+            8 => (3.44, 0.66),  // O
+            9 => (3.98, 0.57),  // F
+            11 => (0.93, 1.55), // Na
+            12 => (1.31, 1.39), // Mg
+            15 => (2.19, 1.07), // P
+            16 => (2.58, 1.05), // S
+            17 => (3.16, 1.02), // Cl
+            _ => (0.0, 1.0),    // Default
         };
 
         Element {
@@ -168,7 +167,8 @@ impl Molecule {
                 let atom1 = &self.atoms[bond.atom1_id];
                 let atom2 = &self.atoms[bond.atom2_id];
 
-                let key = format!("{}-{}",
+                let key = format!(
+                    "{}-{}",
                     atom1.element.symbol.clone(),
                     atom2.element.symbol.clone()
                 );
@@ -182,7 +182,8 @@ impl Molecule {
                             atom2.position.x - atom1.position.x,
                             atom2.position.y - atom1.position.y,
                             atom2.position.z - atom1.position.z,
-                        ).normalize();
+                        )
+                        .normalize();
 
                         let correction = direction.mul(error * 0.1);
 
@@ -252,11 +253,19 @@ impl Reaction {
             2 => {
                 // Second order - assume two reactants
                 if self.reactants.len() >= 2 {
-                    let conc1 = self.reactants.first()
-                        .and_then(|(r, _)| concentrations.get(&format!("{:?}", r.molecular_formula())))
+                    let conc1 = self
+                        .reactants
+                        .first()
+                        .and_then(|(r, _)| {
+                            concentrations.get(&format!("{:?}", r.molecular_formula()))
+                        })
                         .unwrap_or(&0.0);
-                    let conc2 = self.reactants.get(1)
-                        .and_then(|(r, _)| concentrations.get(&format!("{:?}", r.molecular_formula())))
+                    let conc2 = self
+                        .reactants
+                        .get(1)
+                        .and_then(|(r, _)| {
+                            concentrations.get(&format!("{:?}", r.molecular_formula()))
+                        })
                         .unwrap_or(&0.0);
                     k * conc1 * conc2
                 } else {
@@ -272,9 +281,10 @@ impl Reaction {
 pub struct EquationBalancer;
 
 impl EquationBalancer {
-    pub fn balance(reactants: &[HashMap<String, u32>], products: &[HashMap<String, u32>])
-        -> Result<Vec<f64>, String> {
-
+    pub fn balance(
+        reactants: &[HashMap<String, u32>],
+        products: &[HashMap<String, u32>],
+    ) -> Result<Vec<f64>, String> {
         // Collect all unique elements
         let mut all_elements = std::collections::HashSet::new();
         for reactant in reactants {
@@ -408,11 +418,9 @@ impl ThermodynamicsCalculator {
                 let atom2 = &reactant.atoms[bond.atom2_id];
                 let s1 = atom1.element.symbol.clone();
                 let s2 = atom2.element.symbol.clone();
-                let key = format!("{}-{}",
-                    std::cmp::min(&s1, &s2),
-                    std::cmp::max(&s1, &s2)
-                );
-                reactant_energy += bond_energies.get(key.as_str()).unwrap_or(&0.0) * bond.bond_type.order() as f64;
+                let key = format!("{}-{}", std::cmp::min(&s1, &s2), std::cmp::max(&s1, &s2));
+                reactant_energy +=
+                    bond_energies.get(key.as_str()).unwrap_or(&0.0) * bond.bond_type.order() as f64;
             }
         }
 
@@ -422,11 +430,9 @@ impl ThermodynamicsCalculator {
                 let atom2 = &product.atoms[bond.atom2_id];
                 let s1 = atom1.element.symbol.clone();
                 let s2 = atom2.element.symbol.clone();
-                let key = format!("{}-{}",
-                    std::cmp::min(&s1, &s2),
-                    std::cmp::max(&s1, &s2)
-                );
-                product_energy += bond_energies.get(key.as_str()).unwrap_or(&0.0) * bond.bond_type.order() as f64;
+                let key = format!("{}-{}", std::cmp::min(&s1, &s2), std::cmp::max(&s1, &s2));
+                product_energy +=
+                    bond_energies.get(key.as_str()).unwrap_or(&0.0) * bond.bond_type.order() as f64;
             }
         }
 
@@ -483,7 +489,7 @@ impl ThermodynamicsCalculator {
     }
 }
 
-/// Chemistry Engine - Main coordinator
+#[allow(dead_code)]
 pub struct ChemistryEngine {
     molecules: Vec<Molecule>,
     reactions: Vec<Reaction>,
@@ -504,7 +510,8 @@ impl ChemistryEngine {
     }
 
     pub fn add_molecule(&mut self, molecule: Molecule, initial_concentration: f64) {
-        self.concentrations.insert(molecule.name.clone(), initial_concentration);
+        self.concentrations
+            .insert(molecule.name.clone(), initial_concentration);
         self.molecules.push(molecule);
     }
 
@@ -512,8 +519,11 @@ impl ChemistryEngine {
         self.reactions.push(reaction);
     }
 
-    pub fn balance_equation(&self, reactants: &[HashMap<String, u32>], products: &[HashMap<String, u32>])
-        -> Result<Vec<f64>, String> {
+    pub fn balance_equation(
+        &self,
+        reactants: &[HashMap<String, u32>],
+        products: &[HashMap<String, u32>],
+    ) -> Result<Vec<f64>, String> {
         EquationBalancer::balance(reactants, products)
     }
 
@@ -530,7 +540,10 @@ impl ChemistryEngine {
             }
 
             for (product, coeff) in &reaction.products {
-                *self.concentrations.entry(product.name.clone()).or_insert(0.0) += rate * coeff * dt;
+                *self
+                    .concentrations
+                    .entry(product.name.clone())
+                    .or_insert(0.0) += rate * coeff * dt;
             }
         }
 
@@ -550,14 +563,13 @@ impl ChemistryEngine {
             let reactants: Vec<&Molecule> = reaction.reactants.iter().map(|(m, _)| m).collect();
             let products: Vec<&Molecule> = reaction.products.iter().map(|(m, _)| m).collect();
 
-            self.thermo_calc.enthalpy_change(reactants.as_slice(), products.as_slice())
+            self.thermo_calc
+                .enthalpy_change(reactants.as_slice(), products.as_slice())
         } else {
             0.0
         }
     }
 }
-
-
 
 #[cfg(test)]
 mod tests {
@@ -666,55 +678,3 @@ mod tests {
         assert_eq!(concentrations_after.get("H2O"), Some(&1.0));
     }
 }
-
-
-    #[test]
-    fn test_thermodynamics() {
-        let calc = ThermodynamicsCalculator::new(298.15, 1.0); // 25°C, 1 atm
-
-        // Test pH calculation
-        let ph = calc.ph(0.001); // 0.001 M H+
-        assert!((ph - 3.0).abs() < 0.001);
-
-        // Test pKw
-        let pkw = calc.pkw();
-        assert!((pkw - 14.0).abs() < 0.001);
-    }
-
-    #[test]
-    fn test_reaction_kinetics() {
-        let mut reaction = Reaction::new(0.1, 1); // First order, k = 0.1
-        reaction.activation_energy = 50.0; // 50 kJ/mol
-
-        // Create a simple molecule (CH4)
-        let mut molecule = Molecule::new("CH4");
-        let c_element = Element::new("C", "Carbon", 6, 12.01);
-        let h_element = Element::new("H", "Hydrogen", 1, 1.008);
-        molecule.add_atom(c_element, Vec3::new(0.0, 0.0, 0.0));
-        for i in 0..4 {
-            let angle = i as f64 * std::f64::consts::PI * 2.0 / 4.0;
-            molecule.add_atom(h_element.clone(), Vec3::new(angle.cos(), angle.sin(), 0.0));
-        }
-
-        reaction.add_reactant(molecule, 1.0);
-
-        let mut concentrations = HashMap::new();
-        concentrations.insert("CH4".to_string(), 1.0); // 1 M reactant
-
-        let rate = reaction.rate(&concentrations, 298.15);
-        assert!(rate > 0.0);
-    }
-
-    #[test]
-    fn test_chemistry_engine() {
-        let mut engine = ChemistryEngine::new(298.15, 1.0);
-
-        let mut h2 = Molecule::new("H2");
-        h2.add_atom(Element::new("H", "Hydrogen", 1, 1.008), Vec3::new(0.0, 0.0, 0.0));
-        h2.add_atom(Element::new("H", "Hydrogen", 1, 1.008), Vec3::new(0.0, 0.0, 0.74));
-
-        engine.add_molecule(h2, 1.0);
-
-        let concentrations = engine.get_concentrations();
-        assert!(concentrations.len() > 0);
-    }

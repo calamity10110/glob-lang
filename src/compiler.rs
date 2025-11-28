@@ -1,3 +1,4 @@
+#![allow(dead_code)]
 // Compiler module - organizes code into blocks and generates output
 
 pub mod blocks;

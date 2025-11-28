@@ -1,3 +1,4 @@
+#![allow(dead_code)]
 // GPU acceleration support for Universal Language
 use std::collections::HashMap;
 

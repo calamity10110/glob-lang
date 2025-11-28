@@ -1,5 +1,4 @@
 // Linter for Universal Language (simplified version)
-use std::collections::HashSet;
 
 #[derive(Debug, Clone, PartialEq)]
 pub enum LintLevel {

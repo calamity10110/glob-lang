@@ -1,6 +1,7 @@
+#![allow(unused_variables)]
 // Self-Refactoring Compiler Module
 
-use std::collections::{HashMap, HashSet};
+use std::collections::HashMap;
 
 /// Code pattern types
 #[derive(Debug, Clone, PartialEq, Eq, Hash)]

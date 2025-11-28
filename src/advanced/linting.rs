@@ -1,3 +1,4 @@
+#![allow(dead_code)]
 // Advanced linting for Universal Language
 use std::collections::HashMap;
 

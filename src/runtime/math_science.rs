@@ -1,6 +1,4 @@
 // Math and science utilities
-use num_complex::Complex64;
-use num_traits::{Float, Pow};
 use std::f64::consts::{E, PI};
 
 pub struct Math;

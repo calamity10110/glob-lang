@@ -1,6 +1,7 @@
+#![allow(dead_code)]
 // HTTP client for making web requests
 use reqwest::blocking::{Client, Response};
-use reqwest::header::{HeaderMap, HeaderName, HeaderValue};
+use reqwest::header::{HeaderName, HeaderValue};
 use serde_json::Value;
 use std::collections::HashMap;
 use std::time::Duration;
