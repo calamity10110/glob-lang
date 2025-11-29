@@ -4,6 +4,12 @@
 
 ## Update plan:
 
+PHASE 5 Update
+
+- [2025-11-28 22:45:00 UTC-8] : Detailed Phase 5 roadmap and platform support update
+- Files modified : PLAN.md, SUPPORT_PLATFORMS.md
+- Purpose : Detailed planning for native package support and multi-platform targets
+
 ### PHASE 11: GUL Rebrand & v0.11.0 Implementation - COMPLETE ✅
 
 **Timestamp**: 2025-11-28 18:05:00 UTC-8
@@ -16,6 +22,18 @@
 **Purpose**: Complete rebrand to GUL, implement v0.11.0 features, remove placeholders, create documentation
 
 **Test Results**: 301/305 passing (98.7%), Warnings: 13 (down from 120)
+
+### PHASE 12: Dioxus Integration & Web Platform (In Progress)
+
+**Status**: Started 2025-11-28
+**Goal**: Integrate Dioxus 0.7.1 for cross-platform UI (Web, Desktop, Mobile)
+
+- [x] Add Dioxus dependency to Cargo.toml (v0.7.1)
+- [ ] Configure Dioxus launch setup in main.rs
+- [ ] Create basic Dioxus component structure
+- [ ] Integrate GUL runtime with Dioxus state
+- [ ] Build Web UI (WASM target)
+- [ ] Build Desktop UI (Native target)
 
 ---
 
@@ -347,11 +365,6 @@ This document consolidates all development tasks from TODO.md, FUTURE_DEVELOPMEN
 - [x] Implement transaction support
 - [x] Add prepared statement caching
 - [ ] Write SQL integration tests
-  - TODO: Add SQL parsing and execution tests
-  - TODO: Implement query optimization validation tests
-  - TODO: Write transaction integrity tests
-  - TODO: Add performance benchmark tests
-  - TODO: Create error handling tests
 
 ### 4.6 Zero-Copy Optimizations
 
@@ -399,17 +412,18 @@ This document consolidates all development tasks from TODO.md, FUTURE_DEVELOPMEN
   - TODO: Add middleware integration
   - TODO: Support for async handlers
   - TODO: Implement request/response type mapping
-- [ ] Add Tokio support (async runtime)
-  - TODO: Integrate Tokio runtime spawning
-  - TODO: Add task management utilities
+- [.] Add Tokio support (async runtime) - **PARTIAL**
+  - [x] Integrate Tokio runtime spawning
+  - [x] Add task management utilities
   - TODO: Implement async channel support
   - TODO: Support for async file I/O
-- [ ] Add Serde support (serialization)
-  - TODO: Implement JSON/YAML/TOML serialization
+- [.] Add Serde support (serialization) - **PARTIAL**
+  - [x] Implement JSON/YAML/TOML serialization (JSON only)
   - TODO: Add custom derive macros
   - TODO: Support for binary formats (Bincode, MessagePack)
   - TODO: Implement schema validation
-- [ ] Add Dioxus support (UI framework)
+- [.] Add Dioxus support (UI framework) - **IN PROGRESS**
+  - [x] Add dependency (v0.7.1)
   - TODO: Implement component parsing
   - TODO: Add reactive state management
   - TODO: Support for event handling

@@ -1,11 +1,43 @@
-# Supported Platforms
+# Supported Platforms & Targets
 
-## Desktop: Linux, macOS, Windows (x86_64, ARM64)
-## Web: WebAssembly, PWA
-## Mobile: Android, iOS (via WASM)
-## Embedded: ESP32, RP2040, Raspberry Pi, Arduino, STM32, nRF52
-## Cloud: AWS Lambda, Google Cloud, Azure, Cloudflare Workers
-## RTOS: FreeRTOS, Zephyr
-## Non-native packages: Dioxus, numpy
+## 🖥️ Desktop (Native)
 
-See full documentation for platform-specific features and build targets.
+- **Linux**: x86_64, ARM64 (Primary Development Platform)
+- **macOS**: Apple Silicon (M1/M2/M3), Intel
+- **Windows**: x86_64, ARM64
+
+## 🌐 Web (WASM)
+
+- **Browsers**: Chrome, Firefox, Safari, Edge
+- **Runtime**: WebAssembly (wasm32-unknown-unknown)
+- **Frameworks**: Dioxus, Leptos (Planned)
+- **Features**: DOM Access, WebGL/WebGPU, Canvas
+
+## 📱 Mobile (via WASM/Native)
+
+- **Android**: WebView integration, Native API Bridge (Planned)
+- **iOS**: WKWebView integration, Native API Bridge (Planned)
+
+## 🔌 Embedded (Microcontrollers)
+
+- **Espressif**: ESP32, ESP32-S3, ESP32-C3
+- **Raspberry Pi**: RP2040 (Pico)
+- **STMicroelectronics**: STM32 Series
+- **Arduino**: AVR, ARM based boards
+- **Nordic**: nRF52 Series (Bluetooth LE)
+
+## ☁️ Cloud & Serverless
+
+- **AWS**: Lambda, Fargate
+- **Google Cloud**: Cloud Run, Functions
+- **Azure**: Functions, App Service
+- **Edge**: Cloudflare Workers, Vercel
+
+## 📦 Native Package Support
+
+- **Rust**: Tokio, Axum, Serde, Dioxus, Tauri
+- **Python**: NumPy, Pandas, Django, Flask, FastAPI
+- **JavaScript**: Node.js, Express.js, D3.js
+- **UI**: React, Vue, Angular (via integration)
+
+See [PLAN.md](PLAN.md) for detailed implementation roadmap of these platforms.
