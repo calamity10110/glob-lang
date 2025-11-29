@@ -1,6 +1,8 @@
 // Code formatter - formats GUL source code
 #![allow(dead_code)]
 
+use std::path::Path;
+
 pub struct Formatter {
     indent_size: usize,
     max_line_length: usize,
@@ -62,6 +64,19 @@ impl Formatter {
             .collect::<Vec<_>>()
             .join("\n")
     }
+}
+
+// Public API function for CLI
+pub fn format_file(file: &Path) -> Result<(), String> {
+    let source =
+        std::fs::read_to_string(file).map_err(|e| format!("Failed to read file: {}", e))?;
+
+    let formatter = Formatter::new();
+    let formatted = formatter.format_file(&source);
+
+    std::fs::write(file, formatted).map_err(|e| format!("Failed to write file: {}", e))?;
+
+    Ok(())
 }
 
 #[cfg(test)]

@@ -83,7 +83,8 @@ impl BlockOrganizer {
 
         // Write main.mn
         if let Some(main_stmt) = &self.main {
-            let content = format!("{:?}", main_stmt); // TODO: Proper formatting
+            // Format main statement properly
+            let content = self.format_statements(&[main_stmt.clone()]);
             fs::write(output_path.join("main.mn"), content).map_err(|e| e.to_string())?;
         }
 
@@ -120,6 +121,14 @@ main = "main.mn"
 "#
         )
     }
+}
+
+// Public API function
+pub fn organize_program(program: &Program) -> Result<(), String> {
+    let mut organizer = BlockOrganizer::new();
+    organizer.organize(program);
+    organizer.write_blocks("./output")?;
+    Ok(())
 }
 
 #[cfg(test)]

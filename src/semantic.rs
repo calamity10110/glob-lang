@@ -99,7 +99,8 @@ impl SemanticAnalyzer {
     fn analyze_statement(&mut self, statement: &Statement) {
         match statement {
             Statement::Import(module) => {
-                // TODO: Validate module exists
+                // Module validation would check against available modules
+                // For now, we accept all imports
                 let _ = module;
             }
             Statement::Definition { name, value } => {
@@ -364,6 +365,14 @@ impl Default for SemanticAnalyzer {
     fn default() -> Self {
         Self::new()
     }
+}
+
+// Public API function
+pub fn analyze(program: &Program) -> Result<(), String> {
+    let mut analyzer = SemanticAnalyzer::new();
+    analyzer
+        .analyze(program)
+        .map_err(|errors| errors.join("\n"))
 }
 
 #[cfg(test)]
