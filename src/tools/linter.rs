@@ -1,5 +1,7 @@
 // Linter for Universal Language (simplified version)
 
+use std::path::Path;
+
 #[derive(Debug, Clone, PartialEq)]
 pub enum LintLevel {
     Error,
@@ -15,6 +17,16 @@ pub struct LintIssue {
     pub column: usize,
     pub rule: String,
     pub auto_fix: Option<String>,
+}
+
+impl std::fmt::Display for LintIssue {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        write!(
+            f,
+            "[{:?}] Line {}: {} ({})",
+            self.level, self.line, self.message, self.rule
+        )
+    }
 }
 
 // Linter module - checks code for common issues
@@ -120,6 +132,30 @@ impl Linter {
             .iter()
             .any(|issue| issue.level == LintLevel::Error)
     }
+}
+
+// Public API function for CLI
+pub fn lint_file(file: &Path, fix: bool) -> Result<Vec<String>, String> {
+    let source =
+        std::fs::read_to_string(file).map_err(|e| format!("Failed to read file: {}", e))?;
+
+    let mut linter = Linter::new();
+    let issues = linter.lint_file(&source);
+
+    if fix && !issues.is_empty() {
+        // Apply auto-fixes if available
+        let mut fixed_source = source.clone();
+        for issue in &issues {
+            if let Some(fix_text) = &issue.auto_fix {
+                // Simple fix application (would need more sophisticated logic for real use)
+                fixed_source = fixed_source
+                    .replace(&source.lines().nth(issue.line - 1).unwrap_or(""), fix_text);
+            }
+        }
+        std::fs::write(file, fixed_source).map_err(|e| format!("Failed to write file: {}", e))?;
+    }
+
+    Ok(issues.iter().map(|i| i.to_string()).collect())
 }
 
 #[cfg(test)]
