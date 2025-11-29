@@ -1334,7 +1334,7 @@ mod tests {
 
     #[test]
     fn test_engine_creation() {
-        let engine = SymbolicMathEngine::new();
+        let _engine = SymbolicMathEngine::new();
         // Just test that it can be created
         assert!(true);
     }
