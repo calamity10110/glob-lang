@@ -1,3 +1,4 @@
+#![allow(dead_code)]
 // RTOS Integration - FreeRTOS and Zephyr support
 #![allow(unused_variables)]
 

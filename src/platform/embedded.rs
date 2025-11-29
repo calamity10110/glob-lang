@@ -1,3 +1,4 @@
+#![allow(dead_code)]
 // Embedded targets support for Universal Language
 use std::collections::HashMap;
 

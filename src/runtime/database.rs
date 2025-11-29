@@ -1,3 +1,4 @@
+#![allow(dead_code)]
 // Database interface (SQLite)
 use rusqlite::{Connection, Row};
 use std::collections::HashMap;

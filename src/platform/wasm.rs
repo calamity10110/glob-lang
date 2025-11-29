@@ -1,3 +1,4 @@
+#![allow(dead_code)]
 // WASM backend for Universal Language
 use std::collections::HashMap;
 

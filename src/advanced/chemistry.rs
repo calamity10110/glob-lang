@@ -1,3 +1,4 @@
+#![allow(dead_code)]
 // Chemistry Modeling Module
 //
 // This module provides comprehensive chemistry simulation capabilities including:

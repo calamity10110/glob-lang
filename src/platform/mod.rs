@@ -1,3 +1,4 @@
+#![allow(dead_code)]
 // Platform module - Multi-platform support
 
 pub mod embedded;

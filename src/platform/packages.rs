@@ -1,3 +1,4 @@
+#![allow(dead_code)]
 // Native package support for popular frameworks and libraries
 use std::collections::HashMap;
 

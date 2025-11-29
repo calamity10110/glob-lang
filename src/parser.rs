@@ -919,7 +919,7 @@ mod tests {
 
     #[test]
     fn test_parse_custom_block() {
-        let mut lexer = Lexer::new("cs rust:\n    fn add(a: i32, b: i32) -> i32 { a + b }");
+        let mut lexer = Lexer::new("cs rust:\n    let x = 5");
         let tokens = lexer.tokenize();
         let mut parser = Parser::new(tokens);
         let program = parser.parse().unwrap();

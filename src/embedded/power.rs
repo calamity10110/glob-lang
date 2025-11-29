@@ -1,3 +1,4 @@
+#![allow(dead_code)]
 // Low-Power Optimizations for Embedded Systems
 #![allow(unused_variables)]
 

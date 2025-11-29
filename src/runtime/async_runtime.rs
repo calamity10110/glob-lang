@@ -1,3 +1,4 @@
+#![allow(dead_code)]
 // Async runtime - executes async functions
 
 use std::future::Future;

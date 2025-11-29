@@ -1,3 +1,4 @@
+#![allow(dead_code)]
 // Mobile platform support for Universal Language
 use std::collections::HashMap;
 
