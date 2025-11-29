@@ -1,3 +1,5 @@
+#![allow(dead_code)]
+#![allow(unused_variables)]
 // Physics Simulation Module
 //
 // This module provides comprehensive physics simulation capabilities including:

@@ -1,251 +1,457 @@
-# TUI Design (Terminal User Interface)
+# GUL TUI (Terminal User Interface) Guide
 
-## Overview
+Complete guide to using and developing with GUL's Terminal User Interface.
 
-The TUI provides a minimalist ASCII-based interface for terminals and embedded displays.
+## 📋 Table of Contents
 
-## Supported UI Primitives
+1. [Using the TUI IDE](#using-the-tui-ide)
+2. [TUI Components Reference](#tui-components-reference)
+3. [Developing TUI Applications](#developing-tui-applications)
+4. [Advanced TUI Features](#advanced-tui-features)
 
-### Tree Display
+---
 
-```
-def tree = ^÷^[tree]
-ui.print(tree)
-```
+## 🖥️ Using the TUI IDE
 
-ASCII Output:
-```
-├── root
-│   ├── branch1
-│   │   ├── leaf1
-│   │   └── leaf2
-│   └── branch2
-│       └── leaf3
-```
+### Starting the IDE
 
-### Slider
+```bash
+# Navigate to your GUL project
+cd my_project
 
-```
-def slider = ^÷^[slider{min=0, max=100, value=50}]
-ui.print(slider)
+# Start the TUI IDE
+cargo run --example programming_deck
+
+# Or if GUL is installed globally
+gul ide --tui
 ```
 
-ASCII Output:
-```
-[====================|                    ] 50/100
-```
-
-### Button
+### IDE Layout
 
 ```
-def button = ^÷^[button{text="Click Me"}]
-ui.print(button)
+┌─────────────────────────────────────────────────────────────┐
+│ GUL IDE v0.11.0 - [Programming Deck]                       │
+├──────────────┬────────────────────────────┬─────────────────┤
+│  EXPLORER    │  EDITOR - main.mn          │    SYSTEM       │
+│              │                            │                 │
+│ ├── src      │  mn main():                │ CPU Usage       │
+│ │   ├── main │      print("Hello!")       │ [████░░░] 45%   │
+│ │   └── utils│                            │                 │
+│ ├── tests    │                            │ Memory          │
+│ └── package  │                            │ [██████░] 60%   │
+│              │                            │                 │
+├──────────────┴────────────────────────────┴─────────────────┤
+│  TERMINAL                                                   │
+│  $ gul run main.mn                                          │
+│  Hello!                                                     │
+└─────────────────────────────────────────────────────────────┘
+│ READY  |  Ln 2, Col 10  |  UTF-8  |  GUL                   │
+└─────────────────────────────────────────────────────────────┘
 ```
 
-ASCII Output:
-```
-┌──────────┐
-│ Click Me │
-└──────────┘
+### Keyboard Shortcuts
+
+| Shortcut | Action            |
+| -------- | ----------------- |
+| `Ctrl+N` | New file          |
+| `Ctrl+O` | Open file         |
+| `Ctrl+S` | Save file         |
+| `Ctrl+R` | Run current file  |
+| `Ctrl+B` | Build project     |
+| `Ctrl+T` | Run tests         |
+| `Ctrl+F` | Find in file      |
+| `Ctrl+H` | Find and replace  |
+| `Ctrl+/` | Toggle comment    |
+| `Ctrl+Q` | Quit IDE          |
+| `F5`     | Debug             |
+| `F9`     | Toggle breakpoint |
+
+---
+
+## 🎨 TUI Components Reference
+
+### Text Component
+
+```gul
+ui.print(^÷^[text{
+    content: "Hello, World!",
+    fg: "green",
+    bg: "black",
+    bold: true
+}])
 ```
 
-### Text Block
+**Properties:**
+
+- `content`: String to display
+- `fg`: Foreground color (red, green, blue, yellow, cyan, magenta, white, black)
+- `bg`: Background color
+- `bold`: Boolean for bold text
+
+### Button Component
+
+```gul
+ui.print(^÷^[button{text: "Click Me!"}])
+```
+
+**Output:**
 
 ```
-def text = ^÷^[text{content="Hello, World!"}]
-ui.print(text)
-```
-
-ASCII Output:
-```
-┌─────────────────┐
-│ Hello, World!   │
-└─────────────────┘
+┌───────────┐
+│ Click Me! │
+└───────────┘
 ```
 
 ### Progress Bar
 
-```
-def progress = ^÷^[progress{value=75, max=100}]
-ui.print(progress)
+```gul
+ui.print(^÷^[progress{
+    value: 75,
+    max: 100,
+    label: "Loading"
+}])
 ```
 
-ASCII Output:
+**Output:**
+
 ```
-Progress: [███████████████████████████████████████████████████████████░░░░░░░░░░░░░░░] 75%
+Loading: [███████████████████████████░░░░░░░░░░░░░] 75%
+```
+
+### Slider
+
+```gul
+ui.print(^÷^[slider{
+    min: 0,
+    max: 100,
+    value: 50,
+    label: "Volume"
+}])
+```
+
+**Output:**
+
+```
+Volume: [====================|                    ] 50/100
 ```
 
 ### Table
 
-```
-def table = ^÷^[table{
-    headers=["Name", "Age", "City"],
-    rows=[
-        ["Alice", "30", "NYC"],
-        ["Bob", "25", "LA"]
+```gul
+ui.print(^÷^[table{
+    headers: ["ID", "Name", "Status"],
+    rows: [
+        ["1", "Alice", "Active"],
+        ["2", "Bob", "Inactive"],
+        ["3", "Charlie", "Active"]
     ]
-}]
-ui.print(table)
+}])
 ```
 
-ASCII Output:
-```
-┌───────┬─────┬──────┐
-│ Name  │ Age │ City │
-├───────┼─────┼──────┤
-│ Alice │ 30  │ NYC  │
-│ Bob   │ 25  │ LA   │
-└───────┴─────┴──────┘
-```
-
-## Canvas (ASCII Art)
+**Output:**
 
 ```
-def canvas = ^÷^[canvas{width=40, height=10}]
-canvas.draw_line(0, 0, 39, 9)
-canvas.draw_rect(10, 2, 30, 8)
+┌────┬─────────┬──────────┐
+│ ID │ Name    │ Status   │
+├────┼─────────┼──────────┤
+│ 1  │ Alice   │ Active   │
+│ 2  │ Bob     │ Inactive │
+│ 3  │ Charlie │ Active   │
+└────┴─────────┴──────────┘
+```
+
+### Canvas (ASCII Art)
+
+```gul
+canvas = ui.new_canvas(40, 10)
+canvas.draw_rect(5, 1, 35, 8)
+canvas.draw_line(5, 1, 35, 8)
 ui.print(canvas)
 ```
 
-ASCII Output:
-```
-*                                       
- *                                      
-  *       ┌──────────────────┐          
-   *      │                  │          
-    *     │                  │          
-     *    │                  │          
-      *   │                  │          
-       *  │                  │          
-        * └──────────────────┘          
-         *                              
-```
+### Tree View
 
-## Interactive Elements
-
-### Input Field
-
-```
-def input = ^÷^[input{prompt="Enter name: "}]
-name = ui.input(input)
-print("Hello,", name)
-```
-
-Terminal Interaction:
-```
-Enter name: █
-```
-
-### Menu Selection
-
-```
-def menu = ^÷^[menu{
-    title="Choose an option:",
-    options=["Option 1", "Option 2", "Option 3"]
-}]
-choice = ui.select(menu)
-print("Selected:", choice)
-```
-
-Terminal Output:
-```
-Choose an option:
-  > Option 1
-    Option 2
-    Option 3
-```
-
-## Layout System
-
-### Vertical Layout
-
-```
-def layout = ^÷^[vbox{
-    children=[
-        ^÷^[text{content="Header"}],
-        ^÷^[slider{min=0, max=100}],
-        ^÷^[button{text="Submit"}]
+```gul
+ui.print(^÷^[tree{
+    nodes: [
+        {name: "src", children: [
+            {name: "main.mn"},
+            {name: "utils.mn"}
+        ]},
+        {name: "tests", children: [
+            {name: "test_api.mn"}
+        ]}
     ]
-}]
-ui.print(layout)
+}])
 ```
 
-### Horizontal Layout
+**Output:**
 
 ```
-def layout = ^÷^[hbox{
-    children=[
-        ^÷^[text{content="Left"}],
-        ^÷^[text{content="Center"}],
-        ^÷^[text{content="Right"}]
-    ]
-}]
-ui.print(layout)
+├── src
+│   ├── main.mn
+│   └── utils.mn
+├── tests
+│   └── test_api.mn
 ```
 
-## Color Support (ANSI)
+---
 
-```
-def colored_text = ^÷^[text{
-    content="Colorful!",
-    fg="red",
-    bg="black",
-    bold=true
-}]
-ui.print(colored_text)
-```
+## 🛠️ Developing TUI Applications
 
-## Embedded Display Support
+### Basic TUI App Structure
 
-Works on:
-- Serial terminals
-- LCD character displays (16x2, 20x4)
-- OLED displays
-- E-ink displays
-- Framebuffer consoles
-
-### Example: LCD 16x2
-
-```
-imp embedded.lcd
-
-def display = ^÷^[text{content="Hello World!"}]
-lcd.init(16, 2)
-lcd.print(display, row=0, col=0)
-```
-
-## TUI Framework Features
-
-- **Responsive layouts** - Adapts to terminal size
-- **Event handling** - Keyboard and mouse input
-- **Scrolling** - For content larger than screen
-- **Focus management** - Tab navigation between elements
-- **Themes** - Customizable color schemes
-- **Unicode support** - Box-drawing characters
-
-## Example: Full TUI Application
-
-```
-imp ui.tui
-
-def app = ^÷^[vbox{
-    children=[
-        ^÷^[text{content="System Monitor", bold=true}],
-        ^÷^[progress{label="CPU", value=cpu_usage()}],
-        ^÷^[progress{label="RAM", value=ram_usage()}],
-        ^÷^[table{
-            headers=["Process", "PID", "Memory"],
-            rows=get_processes()
-        }],
-        ^÷^[hbox{
-            children=[
-                ^÷^[button{text="Refresh"}],
-                ^÷^[button{text="Quit"}]
-            ]
-        }]
-    ]
-}]
+```gul
+imp ui
 
 mn main():
-    tui.run(app)
+    # Initialize UI runtime
+    runtime = ui.Runtime.new()
+    runtime.clear()
+
+    # Create header
+    runtime.print(^÷^[text{
+        content: "My TUI App",
+        fg: "cyan",
+        bold: true
+    }])
+
+    # Create interactive menu
+    choice = runtime.menu([
+        "Option 1",
+        "Option 2",
+        "Option 3",
+        "Exit"
+    ])
+
+    # Handle user input
+    @if choice == 0:
+        handle_option_1()
+    @elif choice == 1:
+        handle_option_2()
+    @elif choice == 2:
+        handle_option_3()
+    @else:
+        runtime.quit()
 ```
+
+### Input Handling
+
+```gul
+# Text input
+name = ui.input("Enter your name: ")
+
+# Password input (hidden)
+password = ui.input_password("Enter password: ")
+
+# Number input
+age = ui.input_number("Enter your age: ", min=0, max=150)
+
+# Confirmation
+confirmed = ui.confirm("Are you sure?")  # Returns true/false
+```
+
+### Real-time Updates
+
+```gul
+imp ui, time
+
+mn main():
+    runtime = ui.Runtime.new()
+
+    ?count = 0
+    @while true:
+        runtime.clear()
+        runtime.print(^÷^[text{
+            content: f"Counter: {?count}",
+            fg: "green"
+        }])
+
+        ?count = ?count + 1
+        time.sleep(1)  # Update every second
+```
+
+### Multi-Panel Layout
+
+```gul
+# Create a dashboard with multiple panels
+mn create_dashboard():
+    runtime = ui.Runtime.new()
+
+    # Left panel: File tree
+    left_panel = ui.VBox([
+        ui.Text("Files", fg="cyan", bold=true),
+        ui.Tree(get_file_tree())
+    ])
+
+    # Center panel: Content
+    center_panel = ui.VBox([
+        ui.Text("Content", fg="cyan", bold=true),
+        ui.Text(get_content())
+    ])
+
+    # Right panel: Stats
+    right_panel = ui.VBox([
+        ui.Text("Stats", fg="cyan", bold=true),
+        ui.Progress(value=cpu_usage(), max=100, label="CPU"),
+        ui.Progress(value=mem_usage(), max=100, label="Memory")
+    ])
+
+    # Combine panels
+    main_layout = ui.HBox([left_panel, center_panel, right_panel])
+    runtime.print(main_layout)
+```
+
+---
+
+## 🚀 Advanced TUI Features
+
+### Custom Themes
+
+```gul
+# Define a custom theme
+theme = ui.Theme({
+    primary: "cyan",
+    secondary: "magenta",
+    success: "green",
+    error: "red",
+    warning: "yellow",
+    background: "black",
+    foreground: "white"
+})
+
+# Apply theme
+ui.set_theme(theme)
+```
+
+### Event Handling
+
+```gul
+# Listen for keyboard events
+@while true:
+    event = ui.wait_for_event()
+
+    @if event.type == "key":
+        @if event.key == "q":
+            break
+        @elif event.key == "r":
+            refresh_display()
+        @elif event.key == "h":
+            show_help()
+```
+
+### Animations
+
+```gul
+# Spinner animation
+spinner = ui.Spinner(["⠋", "⠙", "⠹", "⠸", "⠼", "⠴", "⠦", "⠧", "⠇", "⠏"])
+
+@while loading:
+    ui.print(spinner.next())
+    time.sleep(0.1)
+```
+
+### Modal Dialogs
+
+```gul
+# Show a modal dialog
+result = ui.dialog({
+    title: "Confirm Action",
+    message: "Are you sure you want to delete this file?",
+    buttons: ["Yes", "No", "Cancel"]
+})
+
+@if result == 0:  # Yes
+    delete_file()
+```
+
+---
+
+## 📦 TUI Component Library
+
+### Installing Additional Components
+
+```bash
+gul add ui-charts    # Add charting components
+gul add ui-forms     # Add form components
+gul add ui-widgets   # Add widget library
+```
+
+### Using Charts
+
+```gul
+imp ui.charts
+
+data = [10, 20, 15, 30, 25, 40]
+labels = ["Jan", "Feb", "Mar", "Apr", "May", "Jun"]
+
+# Bar chart
+ui.print(^÷^[bar_chart{
+    data: data,
+    labels: labels,
+    title: "Monthly Sales"
+}])
+
+# Line chart
+ui.print(^÷^[line_chart{
+    data: data,
+    labels: labels,
+    title: "Trend Analysis"
+}])
+```
+
+---
+
+## 🎓 Best Practices
+
+1. **Keep UI Updates Efficient**: Only redraw changed components
+2. **Handle Terminal Resize**: Listen for resize events and adjust layout
+3. **Use Color Wisely**: Ensure good contrast for readability
+4. **Provide Keyboard Shortcuts**: Make your app accessible
+5. **Test on Different Terminals**: Verify compatibility across terminal emulators
+6. **Handle Errors Gracefully**: Show user-friendly error messages
+7. **Save State**: Persist user preferences and session data
+
+---
+
+## 🔧 Troubleshooting
+
+### TUI Not Displaying Correctly
+
+```bash
+# Check terminal capabilities
+echo $TERM
+
+# Set to xterm-256color if needed
+export TERM=xterm-256color
+```
+
+### Colors Not Showing
+
+```gul
+# Check if terminal supports colors
+@if ui.supports_color():
+    ui.enable_color()
+@else:
+    ui.disable_color()
+```
+
+### Performance Issues
+
+```gul
+# Use buffered rendering
+runtime.enable_buffering()
+runtime.print(component1)
+runtime.print(component2)
+runtime.flush()  # Render all at once
+```
+
+---
+
+## 📚 Additional Resources
+
+- [TUI Examples](examples/tui/)
+- [Component API Reference](docs/api/ui.md)
+- [TUI Design Patterns](docs/patterns/tui.md)
+
+**Build amazing terminal applications with GUL!** 🚀

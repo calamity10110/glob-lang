@@ -1,4 +1,5 @@
 #![allow(dead_code)]
+#![allow(dead_code)]
 // Builder Module - Handles build configuration and executionable from compiled blocks
 
 pub struct Builder {

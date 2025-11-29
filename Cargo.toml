@@ -1,12 +1,18 @@
 [package]
-name = "glob-lang"
-version = "0.10.0"
+name = "gul"
+version = "0.11.0"
 edition = "2021"
-authors = ["GLOB Contributors"]
-description = "GLOB - Global Language for Optimized Building"
+authors = ["GUL Team <team@gul-lang.org>"]
+description = "GUL (Glob Universal Language) - A universal programming language with multi-language integration, flexible imports, and comprehensive annotations"
 license = "MIT"
 repository = "https://github.com/glob-lang/glob"
-keywords = ["compiler", "programming-language", "multi-paradigm", "async", "scientific"]
+keywords = [
+    "compiler",
+    "programming-language",
+    "multi-paradigm",
+    "async",
+    "scientific",
+]
 categories = ["compilers", "development-tools"]
 
 [lib]
@@ -52,9 +58,12 @@ rusqlite = { version = "0.30", features = ["bundled"] }
 num-traits = "0.2"
 num-complex = "0.4"
 
+# Encoding
+base64 = "0.21"
+
 [dev-dependencies]
 criterion = "0.5"
 
 [[bin]]
-name = "glob"
+name = "gul"
 path = "src/main.rs"

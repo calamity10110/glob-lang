@@ -1,4 +1,5 @@
 // RTOS Integration - FreeRTOS and Zephyr support
+#![allow(unused_variables)]
 
 use std::collections::HashMap;
 use std::sync::{Arc, Mutex};

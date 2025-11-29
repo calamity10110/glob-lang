@@ -1,6 +1,6 @@
-# GLOB Language - Project Structure Guide
+# GUL Language - Project Structure Guide
 
-**Understanding how GLOB organizes your code**
+**Understanding how GUL organizes your code**
 
 ---
 
@@ -20,9 +20,9 @@
 
 ## Introduction
 
-### What Makes GLOB Different?
+### What Makes GUL Different?
 
-GLOB uses an **automatic code organization system** that splits your code into logical blocks. This means:
+GUL uses an **automatic code organization system** that splits your code into logical blocks. This means:
 
 ✅ **You write everything in one file** (`main.mn`)  
 ✅ **Compiler automatically organizes** your code into structured blocks  
@@ -38,7 +38,7 @@ Think of it like having an assistant that automatically organizes your desk!
 
 ### What are Blocks?
 
-Blocks are separate files that contain specific types of code. GLOB automatically creates these blocks from your main file.
+Blocks are separate files that contain specific types of code. GUL automatically creates these blocks from your main file.
 
 ### The Six Block Types
 
@@ -231,7 +231,7 @@ mn main():
 
 ### Flexible Import System
 
-GLOB v0.11.0 introduces multiple equivalent import syntaxes. Choose the style that works best for your project!
+GUL v0.11.0 introduces multiple equivalent import syntaxes. Choose the style that works best for your project!
 
 **Individual Imports:**
 
@@ -333,7 +333,7 @@ std = @stddev(data)
 
 ### Package Metadata - `package.toml`
 
-Every GLOB project has a `package.toml` file that describes the package:
+Every GUL project has a `package.toml` file that describes the package:
 
 ```toml
 [package]
@@ -423,9 +423,9 @@ mn main():
 
 How do you share code without exposing passwords, API keys, and other secrets?
 
-### GLOB's Solution
+### GUL's Solution
 
-GLOB has **three types of secret files**:
+GUL has **three types of secret files**:
 
 #### 1. `project.scrt` - Your Actual Secrets (NEVER PUBLISHED)
 
@@ -566,7 +566,7 @@ Edit `main.mn`:
 
 imp std.io
 
-def GREETING = "Hello, GLOB!"
+def GREETING = "Hello, GUL!"
 
 fn greet(name):
     return GREETING + " " + name
@@ -578,7 +578,7 @@ mn main():
 
 #### 3. Save and Auto-Organize
 
-When you save `main.mn`, GLOB automatically:
+When you save `main.mn`, GUL automatically:
 
 - Creates `imports.imp` with your imports
 - Creates `definitions.def` with your constants
@@ -594,7 +594,7 @@ glob run main.mn
 Output:
 
 ```
-Hello, GLOB! World
+Hello, GUL! World
 ```
 
 #### 5. Test Your Code
@@ -611,13 +611,13 @@ glob build --release
 
 ### Live Development
 
-GLOB watches your files and auto-recompiles:
+GUL watches your files and auto-recompiles:
 
 ```bash
 glob watch main.mn
 ```
 
-Now every time you save, GLOB:
+Now every time you save, GUL:
 
 1. Re-organizes blocks
 2. Runs linter
@@ -740,7 +740,7 @@ def PORT = 8080
 asy handle_request(request):
     return {
         status: 200,
-        body: "Hello from GLOB!"
+        body: "Hello from GUL!"
     }
 
 mn main():
@@ -864,7 +864,7 @@ mn main():
 
 ```bash
 glob new <name>          # Create new project
-glob run <file>          # Run a GLOB file
+glob run <file>          # Run a GUL file
 glob build               # Build project
 glob build --release     # Build optimized
 glob test                # Run tests
@@ -877,4 +877,4 @@ glob remove <package>    # Remove dependency
 
 ---
 
-**Now you understand how GLOB organizes your code! Start building amazing projects!** 🚀
+**Now you understand how GUL organizes your code! Start building amazing projects!** 🚀

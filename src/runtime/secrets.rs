@@ -1,3 +1,4 @@
+#![allow(dead_code)]
 // Secrets manager - handles encrypted credentials
 
 use std::collections::HashMap;
@@ -54,16 +55,31 @@ impl SecretsManager {
         leaks
     }
 
-    pub fn encrypt(&mut self, _password: &str) -> Result<(), String> {
-        // TODO: Implement actual encryption
-        self.encrypted = true;
-        Ok(())
+    pub fn encrypt(&self, data: &str) -> String {
+        // Simple XOR-based encryption for demonstration
+        // In production, use proper encryption like AES-256
+        let key = b"gul_secret_key_32bytes_long!!!!";
+        let encrypted: Vec<u8> = data
+            .bytes()
+            .enumerate()
+            .map(|(i, b)| b ^ key[i % key.len()])
+            .collect();
+        base64::encode(&encrypted)
     }
 
-    pub fn decrypt(&mut self, _password: &str) -> Result<(), String> {
-        // TODO: Implement actual decryption
-        self.encrypted = false;
-        Ok(())
+    pub fn decrypt(&self, encrypted: &str) -> Result<String, String> {
+        // Decrypt using same XOR key
+        let key = b"gul_secret_key_32bytes_long!!!!";
+        let decoded =
+            base64::decode(encrypted).map_err(|e| format!("Failed to decode base64: {}", e))?;
+
+        let decrypted: Vec<u8> = decoded
+            .iter()
+            .enumerate()
+            .map(|(i, b)| b ^ key[i % key.len()])
+            .collect();
+
+        String::from_utf8(decrypted).map_err(|e| format!("Failed to convert to UTF-8: {}", e))
     }
 
     pub fn save_to_file(&self, path: &str) -> Result<(), String> {

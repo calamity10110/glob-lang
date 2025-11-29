@@ -9,11 +9,12 @@ The compiler follows an 8-stage pipeline:
 - Reads `.mn` source files
 - Produces token stream
 - Handles:
-  - Keywords (`def`, `fn`, `asy`, `imp`, `cs`, `mn`)
+  - Keywords (`def`, `fn`, `asy`, `imp`, `mn`)
+  - Annotations (`@int`, `@asy`, `@ref`, etc.)
+  - Mutability token (`?`)
   - Operators (`+`, `-`, `*`, `/`, `^`, etc.)
   - Scientific units (`m/s`, `m/s^2`, etc.)
   - UI syntax (`^÷^[...]`)
-  - Ownership keywords (`own`, `ref`, `copy`)
   - String literals, numbers, identifiers
 
 ### STAGE 2 — Parser
@@ -22,20 +23,21 @@ The compiler follows an 8-stage pipeline:
 - Produces Abstract Syntax Tree (AST)
 - Validates syntax structure
 - Handles:
-  - Import declarations
-  - Definition blocks
-  - Function definitions (sync and async)
-  - Foreign language blocks
+  - Flexible import declarations (brackets, braces, parens)
+  - Definition blocks with mutability (`?`)
+  - Annotated function definitions (`@asy`, `@fn`)
+  - Foreign language blocks (`@cs`)
   - Main entry points
   - UI inline syntax
+  - Annotation parsing
 
 ### STAGE 3 — AST Builder
 
 - Enriches AST with semantic information
-- Resolves symbols
-- Type inference
+- Resolves symbols and annotations
+- Type inference with annotation hints
 - Ownership analysis
-- Builds symbol tables
+- Builds symbol tables with mutability tracking
 
 ### STAGE 4 — Block Organizer
 
@@ -50,8 +52,9 @@ The compiler follows an 8-stage pipeline:
 
 ### STAGE 5 — Semantic Analyzer
 
-- Type checking
-- Ownership validation
+- Type checking (validates `@int`, `@str`, etc.)
+- Ownership validation (`@own`, `@ref`, `@copy`)
+- Mutability validation (checks `?` usage)
 - Async/await validation
 - Secret leakage detection
 - Dead code detection

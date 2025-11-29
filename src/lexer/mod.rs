@@ -86,6 +86,8 @@ pub enum Token {
     Ampersand,      // &
     Pipe,           // |
     Semicolon,      // ;
+    QuestionMark,   // ?
+    At,             // @
 }
 
 impl fmt::Display for Token {
@@ -96,6 +98,8 @@ impl fmt::Display for Token {
             Token::Float(n) => write!(f, "Float({})", n),
             Token::String(s) => write!(f, "String(\"{}\")", s),
             Token::UiSprite(s) => write!(f, "UiSprite({})", s),
+            Token::QuestionMark => write!(f, "?"),
+            Token::At => write!(f, "@"),
             _ => write!(f, "{:?}", self),
         }
     }
@@ -294,6 +298,15 @@ impl Lexer {
                         self.advance();
                     }
                 }
+
+                '?' => {
+                    tokens.push(Token::QuestionMark);
+                    self.advance();
+                }
+                '@' => {
+                    tokens.push(Token::At);
+                    self.advance();
+                }
                 _ => self.advance(),
             }
         }
@@ -439,7 +452,7 @@ impl Lexer {
         // If it's an identifier, check if it's followed by a unit pattern (e.g., m/s, kg)
         if matches!(token, Token::Identifier(_)) {
             // Check for unit patterns like m/s, m/s^2, kg, etc.
-            if self.current_char == Some('/') || self.current_char == Some('^') {
+            if self.current_char == Some('/') {
                 let mut unit = value.clone();
 
                 // Read unit pattern
@@ -648,10 +661,19 @@ mod tests {
         // These test the ^÷^[component{properties}] syntax for inline UI components
         let test_cases = vec![
             ("^÷^[tree]", "tree"),
-            ("^÷^[slider{min=0, max=100, value=50}]", "slider{min=0, max=100, value=50}"),
-            ("^÷^[button{text=\"Click Me\"}]", "button{text=\"Click Me\"}"),
+            (
+                "^÷^[slider{min=0, max=100, value=50}]",
+                "slider{min=0, max=100, value=50}",
+            ),
+            (
+                "^÷^[button{text=\"Click Me\"}]",
+                "button{text=\"Click Me\"}",
+            ),
             ("^÷^[image:icon]", "image:icon"),
-            ("^÷^[sprite:player{x=10, y=20, width=32, height=32}]", "sprite:player{x=10, y=20, width=32, height=32}"),
+            (
+                "^÷^[sprite:player{x=10, y=20, width=32, height=32}]",
+                "sprite:player{x=10, y=20, width=32, height=32}",
+            ),
         ];
 
         for (input, expected) in test_cases {
@@ -686,7 +708,11 @@ mod tests {
             if let Some(pos) = cs_pos {
                 if pos + 1 < tokens.len() {
                     if let Token::Identifier(lang) = &tokens[pos + 1] {
-                        assert_eq!(lang, expected_lang, "Expected language {} but got {}", expected_lang, lang);
+                        assert_eq!(
+                            lang, expected_lang,
+                            "Expected language {} but got {}",
+                            expected_lang, lang
+                        );
                     } else {
                         panic!("Expected identifier after Cs token");
                     }
@@ -697,7 +723,8 @@ mod tests {
 
     #[test]
     fn test_type_annotations() {
-        let mut lexer = Lexer::new("def name: str = \"Alice\"\ndef age: int = 30\ndef speed: float = 10.5 m/s");
+        let mut lexer =
+            Lexer::new("def name: str = \"Alice\"\ndef age: int = 30\ndef speed: float = 10.5 m/s");
         let tokens = lexer.tokenize();
 
         // Check for colon tokens (type annotations)
@@ -705,17 +732,20 @@ mod tests {
         assert_eq!(colon_count, 3);
 
         // Check for type identifiers
-        let type_identifiers: Vec<_> = tokens.iter().filter_map(|t| {
-            if let Token::Identifier(id) = t {
-                if id == "str" || id == "int" || id == "float" {
-                    Some(id.as_str())
+        let type_identifiers: Vec<_> = tokens
+            .iter()
+            .filter_map(|t| {
+                if let Token::Identifier(id) = t {
+                    if id == "str" || id == "int" || id == "float" {
+                        Some(id.as_str())
+                    } else {
+                        None
+                    }
                 } else {
                     None
                 }
-            } else {
-                None
-            }
-        }).collect();
+            })
+            .collect();
 
         assert_eq!(type_identifiers, vec!["str", "int", "float"]);
     }
@@ -734,7 +764,8 @@ mod tests {
 
     #[test]
     fn test_import_statements() {
-        let mut lexer = Lexer::new("imp std.io\nimp std.http\nimp ai.cv\nimp ui\nimp embedded.gpio");
+        let mut lexer =
+            Lexer::new("imp std.io\nimp std.http\nimp ai.cv\nimp ui\nimp embedded.gpio");
         let tokens = lexer.tokenize();
 
         // Check for import keywords
@@ -766,10 +797,57 @@ mod tests {
         // Test scientific notation and expressions from SYNTAX.md
         // Covers physics formulas, chemistry expressions, and mathematical operations
         let test_cases = vec![
-            ("def F = m * a", vec![Token::Def, Token::Identifier("F".to_string()), Token::Equal, Token::Identifier("m".to_string()), Token::Star, Token::Identifier("a".to_string())]),
-            ("def E = m * c^2", vec![Token::Def, Token::Identifier("E".to_string()), Token::Equal, Token::Identifier("m".to_string()), Token::Star, Token::Identifier("c".to_string()), Token::Caret, Token::Integer(2)]),
-            ("def v = d / t", vec![Token::Def, Token::Identifier("v".to_string()), Token::Equal, Token::Identifier("d".to_string()), Token::Slash, Token::Identifier("t".to_string())]),
-            ("def pH = -log10([H+])", vec![Token::Def, Token::Identifier("pH".to_string()), Token::Equal, Token::Minus, Token::Identifier("log10".to_string()), Token::LeftParen, Token::LeftBracket, Token::Identifier("H".to_string()), Token::Plus, Token::RightBracket, Token::RightParen]),
+            (
+                "def F = m * a",
+                vec![
+                    Token::Def,
+                    Token::Identifier("F".to_string()),
+                    Token::Equal,
+                    Token::Identifier("m".to_string()),
+                    Token::Star,
+                    Token::Identifier("a".to_string()),
+                ],
+            ),
+            (
+                "def E = m * c^2",
+                vec![
+                    Token::Def,
+                    Token::Identifier("E".to_string()),
+                    Token::Equal,
+                    Token::Identifier("m".to_string()),
+                    Token::Star,
+                    Token::Identifier("c".to_string()),
+                    Token::Caret,
+                    Token::Integer(2),
+                ],
+            ),
+            (
+                "def v = d / t",
+                vec![
+                    Token::Def,
+                    Token::Identifier("v".to_string()),
+                    Token::Equal,
+                    Token::Identifier("d".to_string()),
+                    Token::Slash,
+                    Token::Identifier("t".to_string()),
+                ],
+            ),
+            (
+                "def pH = -log10([H+])",
+                vec![
+                    Token::Def,
+                    Token::Identifier("pH".to_string()),
+                    Token::Equal,
+                    Token::Minus,
+                    Token::Identifier("log10".to_string()),
+                    Token::LeftParen,
+                    Token::LeftBracket,
+                    Token::Identifier("H".to_string()),
+                    Token::Plus,
+                    Token::RightBracket,
+                    Token::RightParen,
+                ],
+            ),
         ];
 
         for (input, expected_pattern) in test_cases {
@@ -780,11 +858,28 @@ mod tests {
             for (i, expected_token) in expected_pattern.iter().enumerate() {
                 if i < tokens.len() {
                     match (expected_token, &tokens[i]) {
-                        (Token::Identifier(expected), Token::Identifier(actual)) => assert_eq!(expected, actual),
+                        (Token::Identifier(expected), Token::Identifier(actual)) => {
+                            assert_eq!(expected, actual)
+                        }
                         (expected, actual) => assert_eq!(expected, actual),
                     }
                 }
             }
         }
+    }
+
+    #[test]
+    fn test_v0_11_0_tokens() {
+        let mut lexer = Lexer::new("?count = 0 @int @global");
+        let tokens = lexer.tokenize();
+
+        assert_eq!(tokens[0], Token::QuestionMark);
+        assert_eq!(tokens[1], Token::Identifier("count".to_string()));
+        assert_eq!(tokens[2], Token::Equal);
+        assert_eq!(tokens[3], Token::Integer(0));
+        assert_eq!(tokens[4], Token::At);
+        assert_eq!(tokens[5], Token::Identifier("int".to_string()));
+        assert_eq!(tokens[6], Token::At);
+        assert_eq!(tokens[7], Token::Identifier("global".to_string()));
     }
 }

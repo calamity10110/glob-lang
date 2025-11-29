@@ -1,3 +1,4 @@
+#![allow(dead_code)]
 // Semantic analyzer - type checking and validation
 
 use crate::ast::*;

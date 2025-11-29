@@ -17,6 +17,8 @@ pub struct LintIssue {
     pub auto_fix: Option<String>,
 }
 
+// Linter module - checks code for common issues
+#[allow(dead_code)]
 pub struct Linter {
     issues: Vec<LintIssue>,
 }

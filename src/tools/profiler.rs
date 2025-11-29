@@ -1,4 +1,5 @@
-// Profiler for Universal Language
+// Profiler module - performance profiling and analysis
+#![allow(dead_code)]
 use std::collections::HashMap;
 use std::time::{Duration, Instant};
 

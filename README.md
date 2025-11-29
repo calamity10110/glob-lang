@@ -1,4 +1,4 @@
-# GLOB - Global Language for Optimized Building
+# GUL - Glob Universal Language
 
 **A modern, multi-paradigm programming language designed for everyone**
 
@@ -9,9 +9,9 @@
 
 ---
 
-## 🌟 What is GLOB?
+## 🌟 What is GUL?
 
-GLOB (Global Language for Optimized Building) is a revolutionary programming language that combines:
+GUL (Glob Universal Language) is a revolutionary programming language that combines:
 
 - **🐍 Python's** simplicity and readability
 - **🦀 Rust's** safety and performance
@@ -20,7 +20,7 @@ GLOB (Global Language for Optimized Building) is a revolutionary programming lan
 - **🎨 First-class UI components** as syntax
 - **🌐 Multi-language integration** (Python, Rust, JS, SQL, and more)
 
-### Why GLOB?
+### Why GUL?
 
 ✅ **Beginner-Friendly** - Easy to learn, hard to master  
 ✅ **Production-Ready** - 98% test coverage, battle-tested  
@@ -36,8 +36,8 @@ GLOB (Global Language for Optimized Building) is a revolutionary programming lan
 ### Installation
 
 ```bash
-# Install GLOB compiler
-curl -sSf https://glob-lang.org/install.sh | sh
+# Install GUL compiler
+curl -sSf https://gul.org/install.sh | sh
 
 # Verify installation
 glob --version
@@ -48,10 +48,10 @@ glob --version
 Create `hello.mn`:
 
 ```glob
-# hello.mn - Your first GLOB program
+# hello.mn - Your first GUL program
 
 mn main():
-    print("Hello, GLOB!")
+    print("Hello, GUL!")
 ```
 
 Run it:
@@ -63,12 +63,12 @@ glob run hello.mn
 Output:
 
 ```
-Hello, GLOB!
+Hello, GUL!
 ```
 
 ---
 
-## 📚 Learn GLOB
+## 📚 Learn GUL
 
 ### 5-Minute Tutorial
 
@@ -126,7 +126,7 @@ mn main():
 
 ### 1. Auto-Organizing Block System
 
-Write everything in one file, GLOB organizes it automatically:
+Write everything in one file, GUL organizes it automatically:
 
 ```glob
 # You write: main.mn
@@ -137,7 +137,7 @@ fn greet(name): return "Hello, " + name
 mn main(): print(greet("World"))
 ```
 
-GLOB automatically creates:
+GUL automatically creates:
 
 - `imports.imp` - All imports
 - `definitions.def` - All constants
@@ -165,7 +165,7 @@ cs rust:
 cs sql:
     SELECT * FROM users WHERE age > 18
 
-# Use them in GLOB
+# Use them in GUL
 mn main():
     data = [1, 2, 3, 4, 5]
     mean = analyze(data)
@@ -299,7 +299,7 @@ asy load_dashboard():
 
 ```bash
 # Clone repository
-git clone https://github.com/glob-lang/glob.git
+git clone https://github.com/gul/glob.git
 cd glob
 
 # Build compiler
@@ -383,7 +383,7 @@ asy handle_request(request):
     return {
         status: 200,
         headers: {"Content-Type": "application/json"},
-        body: {"message": "Hello from GLOB!"}
+        body: {"message": "Hello from GUL!"}
     }
 
 mn main():
@@ -436,23 +436,23 @@ mn main():
 
 ## 🎓 Learning Resources
 
-- **[Official Tutorial](https://glob-lang.org/tutorial)** - Step-by-step guide
-- **[Language Reference](https://glob-lang.org/reference)** - Complete reference
-- **[Cookbook](https://glob-lang.org/cookbook)** - Common patterns
-- **[API Documentation](https://docs.glob-lang.org)** - Standard library docs
-- **[Community Forum](https://forum.glob-lang.org)** - Ask questions
+- **[Official Tutorial](https://gul.org/tutorial)** - Step-by-step guide
+- **[Language Reference](https://gul.org/reference)** - Complete reference
+- **[Cookbook](https://gul.org/cookbook)** - Common patterns
+- **[API Documentation](https://docs.gul.org)** - Standard library docs
+- **[Community Forum](https://forum.gul.org)** - Ask questions
 
 ---
 
 ## 📜 License
 
-GLOB is licensed under the MIT License. See [LICENSE](LICENSE) for details.
+GUL is licensed under the MIT License. See [LICENSE](LICENSE) for details.
 
 ---
 
 ## 🙏 Acknowledgments
 
-GLOB is inspired by many great languages:
+GUL is inspired by many great languages:
 
 - **Python** - Simplicity and readability
 - **Rust** - Safety and performance
@@ -465,7 +465,7 @@ GLOB is inspired by many great languages:
 
 ---
 
-**Start building with GLOB today!** 🚀
+**Start building with GUL today!** 🚀
 
 ```bash
 glob new my-project

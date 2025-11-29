@@ -1,280 +1,557 @@
-# WebUI Design (Canvas-Based IDE)
+# GUL Web IDE & Web Development Guide
 
-## Overview
+Complete guide to using the GUL Web IDE and developing web applications.
 
-The WebUI provides a modern, canvas-based visual editor called **Program Deck**. using Rust/Dioxus for TUI, App and WebUI.
+## 📋 Table of Contents
 
-## Features
+1. [Using the Web IDE](#using-the-web-ide)
+2. [Developing Web Applications](#developing-web-applications)
+3. [Hosting & Deployment](#hosting--deployment)
+4. [Web IDE Features](#web-ide-features)
 
-### Node-Based Code Editor
+---
 
-- Visual representation of code blocks
-- Drag-and-drop organization
-- Real-time connections between nodes
-- Automatic layout optimization
+## 🌐 Using the Web IDE
 
-### Node Types
+### Starting the Web IDE Locally
 
-1. **Import Node** - Shows imported modules
-2. **Definition Node** - Constants and type definitions
-3. **Function Node** - Sync function blocks
-4. **Async Node** - Async function blocks
-5. **Custom Node** - Foreign language blocks
-6. **UI Node** - Inline UI components
-7. **Main Node** - Entry point
+```bash
+# Navigate to the web directory
+cd web
 
-### Canvas Layout
+# Install dependencies (first time only)
+npm install
 
-```
-┌─────────────────────────────────────────────────────────┐
-│  Program Deck - main.mn                          [≡] [×] │
-├─────────────────────────────────────────────────────────┤
-│  File  Edit  View  Run  Debug  Help                     │
-├──────────┬──────────────────────────────────────────────┤
-│          │                                               │
-│  Files   │         ┌──────────────┐                     │
-│  ├─ src  │         │ Import Node  │                     │
-│  │  └─ main.mn    │ std.io       │                     │
-│  ├─ imports.imp   │ std.http     │                     │
-│  ├─ definitions.def└──────────────┘                     │
-│  ├─ async.asy          │                                │
-│  ├─ functions.fnc      ▼                                │
-│  └─ custom.cs     ┌──────────────┐                     │
-│                    │ Async Node   │                     │
-│  Outline          │ fetch()      │                     │
-│  ├─ Imports       └──────────────┘                     │
-│  ├─ Definitions        │                                │
-│  ├─ Functions          ▼                                │
-│  └─ Main          ┌──────────────┐                     │
-│                    │ Main Node    │                     │
-│                    │ main()       │                     │
-│                    └──────────────┘                     │
-│                                                          │
-└──────────┴──────────────────────────────────────────────┘
+# Start development server
+dx serve
 ```
 
-## UI Component Rendering
+The IDE will be available at `http://localhost:8080`
 
-### Live Preview
-
-UI components defined with `^÷^[...]` syntax are rendered in real-time:
+### Web IDE Interface
 
 ```
-def slider = ^÷^[slider{min=0, max=100, value=50}]
+┌─────────────────────────────────────────────────────────────┐
+│  GUL Web IDE                                    [⚙️] [👤]   │
+├──────────┬──────────────────────────────────────────────────┤
+│ FILES    │  main.mn                                    [×]  │
+│          │                                                   │
+│ 📁 src   │  1  mn main():                                   │
+│  📄 main │  2      print("Hello, Web!")                     │
+│  📄 utils│  3                                               │
+│ 📁 tests │  4                                               │
+│          │                                                   │
+├──────────┼──────────────────────────────────────────────────┤
+│ CONSOLE  │  OUTPUT                                          │
+│          │  > gul run main.mn                               │
+│          │  Hello, Web!                                     │
+│          │  ✓ Completed in 0.5s                             │
+└──────────┴──────────────────────────────────────────────────┘
 ```
 
-Renders as interactive HTML5 slider in the preview pane.
+### Key Features
 
-### Preview Modes
+- **Real-time Collaboration**: Share your workspace URL
+- **Cloud Sync**: Auto-save to cloud storage
+- **Syntax Highlighting**: Full GUL language support
+- **Integrated Terminal**: Run commands in-browser
+- **Git Integration**: Commit and push directly from IDE
+- **Live Preview**: See output instantly
 
-1. **Auto-update** - Updates on every keystroke
-2. **On-save** - Updates when file is saved
-3. **Manual** - Updates on button click
-4. **Tab-switch** - Updates when switching to preview tab
+---
 
-## Code Editor Features
+## 🚀 Developing Web Applications
 
-### Syntax Highlighting
+### Basic Web App Structure
 
-- Keywords in blue
-- Strings in green
-- Numbers in orange
-- Comments in gray
-- UI syntax in purple
+```gul
+imp web
 
-### Auto-completion
+mn main():
+    # Create a web application
+    app = web.App.new()
 
-- Import suggestions
-- Function signatures
-- Type hints
-- UI component properties
+    # Define routes
+    app.route("/", handle_home)
+    app.route("/api/data", handle_api)
 
-### Inline Linting
+    # Start server
+    app.run(host="0.0.0.0", port=8080)
 
-- Real-time error detection
-- Warning annotations
-- Suggestions for improvements
-- Quick-fix actions
+@fn handle_home(request):
+    return web.html("""
+        <!DOCTYPE html>
+        <html>
+        <head>
+            <title>GUL Web App</title>
+        </head>
+        <body>
+            <h1>Welcome to GUL!</h1>
+        </body>
+        </html>
+    """)
 
-### Code Actions
-
-- Convert `fn` → `async`
-- Extract to function
-- Inline variable
-- Organize imports
-- Format code
-
-## Visual Debugger
-
-### Breakpoints
-
-- Click line numbers to set breakpoints
-- Conditional breakpoints
-- Logpoints (non-breaking)
-
-### Debug View
-
-```
-┌─────────────────────────────────────────┐
-│ Variables                                │
-├─────────────────────────────────────────┤
-│ ├─ url: "https://api.example.com"       │
-│ ├─ res: Response { status: 200 }        │
-│ └─ data: { users: [...] }               │
-├─────────────────────────────────────────┤
-│ Call Stack                               │
-├─────────────────────────────────────────┤
-│ ├─ main() [main.mn:15]                  │
-│ └─ fetch() [async.asy:5]                │
-├─────────────────────────────────────────┤
-│ Breakpoints                              │
-├─────────────────────────────────────────┤
-│ ✓ main.mn:15                            │
-│ ✓ async.asy:8                           │
-└─────────────────────────────────────────┘
+@asy handle_api(request):
+    data = await fetch_data_from_db()
+    return web.json(data)
 ```
 
-## Performance Profiler
+### Using Dioxus for Interactive UIs
 
-### Flame Graph
+```gul
+imp dioxus
 
-Visual representation of function call times.
+@fn App():
+    ?count = 0
 
-### Metrics
+    return html!(
+        div {
+            h1 { "Counter: {?count}" }
+            button {
+                onclick: |_| ?count = ?count + 1,
+                "Increment"
+            }
+            button {
+                onclick: |_| ?count = ?count - 1,
+                "Decrement"
+            }
+        }
+    )
 
-- Function execution time
-- Memory usage
-- Async task count
-- UI render time
-
-## Package Explorer
-
-### Visual Dependency Graph
-
-```
-     std.io
-       │
-       ▼
-    my-app ──→ std.http
-       │
-       ▼
-    ui.widgets
-```
-
-### Package Search
-
-- Semantic search
-- Popularity ranking
-- Version compatibility
-- Auto-install
-
-## Live Collaboration
-
-### Multi-user Editing
-
-- Real-time cursor positions
-- Collaborative debugging
-- Shared terminal
-- Chat integration
-
-## Terminal Integration
-
-### Embedded Terminal
-
-- Run commands
-- View logs
-- Interactive REPL
-- Build output
-
-## UI Canvas Editor
-
-### Visual UI Builder
-
-Drag-and-drop UI components:
-
-```
-┌─────────────────────────────────────────┐
-│ UI Canvas                                │
-├─────────────────────────────────────────┤
-│                                          │
-│  ┌────────────────────────────────┐     │
-│  │ Header                         │     │
-│  └────────────────────────────────┘     │
-│                                          │
-│  [====================|         ] 50    │
-│                                          │
-│  ┌──────────┐  ┌──────────┐            │
-│  │ Submit   │  │ Cancel   │            │
-│  └──────────┘  └──────────┘            │
-│                                          │
-└─────────────────────────────────────────┘
+mn main():
+    dioxus.launch(App)
 ```
 
-Generates code:
+### REST API Example
 
+```gul
+imp web, json
+
+# Define data model
+@map User = {
+    id: @int,
+    name: @str,
+    email: @str
+}
+
+# In-memory storage
+@global ?users = []
+
+@fn create_user(request):
+    user_data = json.parse(request.body)
+    user = User{
+        id: len(@global ?users) + 1,
+        name: user_data.name,
+        email: user_data.email
+    }
+    @global ?users.append(user)
+    return web.json(user, status=201)
+
+@fn get_users(request):
+    return web.json(@global ?users)
+
+@fn get_user(request):
+    user_id = int(request.params.id)
+    user = @global ?users.find(|u| u.id == user_id)
+
+    @if user:
+        return web.json(user)
+    @else:
+        return web.json({error: "User not found"}, status=404)
+
+mn main():
+    app = web.App.new()
+
+    app.post("/api/users", create_user)
+    app.get("/api/users", get_users)
+    app.get("/api/users/:id", get_user)
+
+    app.run(port=8080)
 ```
-def ui = ^÷^[vbox{
-    children=[
-        ^÷^[text{content="Header"}],
-        ^÷^[slider{min=0, max=100, value=50}],
-        ^÷^[hbox{
-            children=[
-                ^÷^[button{text="Submit"}],
-                ^÷^[button{text="Cancel"}]
-            ]
-        }]
-    ]
-}]
+
+### Database Integration
+
+```gul
+imp web, db
+
+@cs sql:
+    CREATE TABLE IF NOT EXISTS posts (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        title TEXT NOT NULL,
+        content TEXT NOT NULL,
+        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    );
+
+@asy get_posts(request):
+    posts = await db.query("SELECT * FROM posts ORDER BY created_at DESC")
+    return web.json(posts)
+
+@asy create_post(request):
+    data = json.parse(request.body)
+
+    result = await db.execute(
+        "INSERT INTO posts (title, content) VALUES (?, ?)",
+        [data.title, data.content]
+    )
+
+    return web.json({id: result.last_insert_id}, status=201)
+
+mn main():
+    # Initialize database
+    db.init("blog.db")
+    db.execute(sql.create_table)
+
+    # Start web server
+    app = web.App.new()
+    app.get("/api/posts", get_posts)
+    app.post("/api/posts", create_post)
+    app.run(port=8080)
 ```
 
-## Responsive Design
+---
 
-- Adapts to screen size
-- Mobile-friendly
-- Touch support
-- Keyboard shortcuts
+## 📦 Hosting & Deployment
 
-## Themes
+### Building for Production
 
-### Dark Mode
+```bash
+# Build optimized web app
+cd web
+dx build --release
 
-- Default theme
-- Reduced eye strain
-- Syntax highlighting optimized
+# Output will be in dist/
+```
 
-### Light Mode
+### Deploying to Vercel
 
-- High contrast
-- Print-friendly
+```bash
+# Install Vercel CLI
+npm i -g vercel
 
-### Custom Themes
+# Deploy
+cd web
+vercel --prod
+```
 
-- User-defined color schemes
-- Import/export themes
+### Deploying to Netlify
 
-## Accessibility
+```bash
+# Install Netlify CLI
+npm i -g netlify-cli
 
-- Screen reader support
-- Keyboard navigation
-- High contrast mode
-- Adjustable font sizes
+# Deploy
+cd web
+netlify deploy --prod --dir=dist
+```
 
-## Deployment
+### Self-Hosting with Docker
 
-### Web-based (SaaS)
+Create `Dockerfile`:
 
-- No installation required
-- Cloud storage
-- Automatic updates
+```dockerfile
+FROM rust:1.70 as builder
 
-### Desktop App (Electron)
+WORKDIR /app
+COPY . .
+RUN cargo build --release
 
-- Offline support
-- Native performance
-- Local file access
+FROM debian:bookworm-slim
+COPY --from=builder /app/target/release/gul /usr/local/bin/
+COPY web/dist /var/www/html
 
-### Self-hosted
+EXPOSE 8080
+CMD ["gul", "serve", "/var/www/html"]
+```
 
-- Docker container
-- On-premise deployment
-- Custom authentication
+Build and run:
+
+```bash
+docker build -t gul-web .
+docker run -p 8080:8080 gul-web
+```
+
+### Deploying to AWS
+
+```bash
+# Build for production
+dx build --release
+
+# Upload to S3
+aws s3 sync dist/ s3://my-gul-app
+
+# Configure CloudFront for SPA routing
+aws cloudfront create-distribution \
+    --origin-domain-name my-gul-app.s3.amazonaws.com
+```
+
+---
+
+## 🎨 Web IDE Features
+
+### Customization
+
+```javascript
+// .gul/config.json
+{
+  "theme": "dark",
+  "fontSize": 14,
+  "fontFamily": "Fira Code",
+  "tabSize": 4,
+  "autoSave": true,
+  "autoSaveDelay": 1000,
+  "formatOnSave": true,
+  "linting": true
+}
+```
+
+### Extensions
+
+```bash
+# Install extensions
+gul ext install syntax-highlighter
+gul ext install git-integration
+gul ext install ai-assistant
+
+# List installed extensions
+gul ext list
+
+# Remove extension
+gul ext remove ai-assistant
+```
+
+### Keyboard Shortcuts
+
+| Shortcut       | Action           |
+| -------------- | ---------------- |
+| `Ctrl+S`       | Save file        |
+| `Ctrl+Shift+S` | Save all         |
+| `Ctrl+P`       | Quick open file  |
+| `Ctrl+Shift+P` | Command palette  |
+| `Ctrl+F`       | Find             |
+| `Ctrl+H`       | Find and replace |
+| `Ctrl+/`       | Toggle comment   |
+| `Ctrl+B`       | Toggle sidebar   |
+| `Ctrl+J`       | Toggle console   |
+| `Ctrl+`        | Zoom in          |
+| `Ctrl-`        | Zoom out         |
+| `F11`          | Fullscreen       |
+
+### Collaboration Features
+
+```gul
+# Share your workspace
+workspace_url = ide.share()
+print(f"Share this URL: {workspace_url}")
+
+# Join a shared workspace
+ide.join("https://gul-ide.dev/workspace/abc123")
+
+# Real-time cursor tracking
+ide.enable_cursor_tracking()
+
+# Voice chat
+ide.start_voice_chat()
+```
+
+---
+
+## 🔧 Advanced Web Development
+
+### WebAssembly Compilation
+
+```bash
+# Compile GUL to WASM
+gul build --target wasm main.mn
+
+# Output: main.wasm
+```
+
+Use in web page:
+
+```html
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>GUL WASM App</title>
+  </head>
+  <body>
+    <script type="module">
+      import init from "./main.wasm";
+
+      async function run() {
+        await init();
+        // Your GUL code runs here
+      }
+
+      run();
+    </script>
+  </body>
+</html>
+```
+
+### Progressive Web App (PWA)
+
+Add `manifest.json`:
+
+```json
+{
+  "name": "GUL App",
+  "short_name": "GUL",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#000000",
+  "theme_color": "#00ff00",
+  "icons": [
+    {
+      "src": "/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}
+```
+
+Add service worker:
+
+```javascript
+// sw.js
+self.addEventListener("install", (event) => {
+  event.waitUntil(
+    caches.open("gul-v1").then((cache) => {
+      return cache.addAll(["/", "/index.html", "/main.wasm", "/styles.css"]);
+    })
+  );
+});
+
+self.addEventListener("fetch", (event) => {
+  event.respondWith(
+    caches.match(event.request).then((response) => {
+      return response || fetch(event.request);
+    })
+  );
+});
+```
+
+### Server-Side Rendering (SSR)
+
+```gul
+imp dioxus.ssr
+
+@fn render_to_string(component):
+    return dioxus.ssr.render(component)
+
+@fn handle_request(request):
+    html = render_to_string(App())
+    return web.html(f"""
+        <!DOCTYPE html>
+        <html>
+        <head>
+            <title>GUL SSR</title>
+        </head>
+        <body>
+            <div id="app">{html}</div>
+            <script src="/hydrate.js"></script>
+        </body>
+        </html>
+    """)
+```
+
+---
+
+## 📊 Performance Optimization
+
+### Code Splitting
+
+```gul
+# Lazy load components
+@lazy import HeavyComponent from "./heavy.gul"
+
+@fn App():
+    return html!(
+        div {
+            Suspense {
+                fallback: html!(div { "Loading..." }),
+                HeavyComponent {}
+            }
+        }
+    )
+```
+
+### Caching Strategy
+
+```gul
+imp web.cache
+
+# Cache API responses
+@cache(ttl=3600)  # Cache for 1 hour
+@asy get_data():
+    return await fetch_from_api()
+
+# Cache static assets
+app.static("/assets", cache_control="public, max-age=31536000")
+```
+
+### Compression
+
+```gul
+# Enable gzip compression
+app.use_compression()
+
+# Enable Brotli for better compression
+app.use_brotli()
+```
+
+---
+
+## 🔒 Security Best Practices
+
+### CORS Configuration
+
+```gul
+app.cors({
+    origins: ["https://example.com"],
+    methods: ["GET", "POST"],
+    headers: ["Content-Type", "Authorization"],
+    credentials: true
+})
+```
+
+### CSRF Protection
+
+```gul
+imp web.csrf
+
+app.use_csrf_protection()
+
+@fn handle_form(request):
+    @if not csrf.verify(request):
+        return web.error(403, "CSRF validation failed")
+
+    # Process form
+```
+
+### Rate Limiting
+
+```gul
+imp web.ratelimit
+
+@ratelimit(max_requests=100, window=60)  # 100 requests per minute
+@fn api_endpoint(request):
+    return web.json({status: "ok"})
+```
+
+---
+
+## 📚 Additional Resources
+
+- [Web Examples](examples/web/)
+- [Dioxus Documentation](https://dioxuslabs.com)
+- [Web API Reference](docs/api/web.md)
+- [Deployment Guide](docs/deployment.md)
+
+**Build amazing web applications with GUL!** 🚀

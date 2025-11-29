@@ -1,4 +1,5 @@
-// Code formatter for Universal Language (simplified version)
+// Code formatter - formats GUL source code
+#![allow(dead_code)]
 
 pub struct Formatter {
     indent_size: usize,

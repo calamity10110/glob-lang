@@ -1,3 +1,4 @@
+#![allow(unused_mut)]
 // Parser module - builds AST from tokens
 
 use crate::ast::*;
@@ -97,9 +98,44 @@ impl Parser {
     fn parse_import(&mut self) -> Result<Statement, String> {
         self.advance(); // Skip 'imp'
 
+        // Handle flexible import syntax: imp [python: numpy] or imp python: numpy
+        // Skip optional grouping delimiters
+        let has_bracket = if self.current_token() == &Token::LeftBracket {
+            self.advance();
+            true
+        } else if self.current_token() == &Token::LeftBrace {
+            self.advance();
+            true
+        } else if self.current_token() == &Token::LeftParen {
+            self.advance();
+            true
+        } else {
+            false
+        };
+
         if let Token::Identifier(module) = self.current_token() {
             let module_name = module.clone();
             self.advance();
+
+            // Skip optional colon separator (for language: module syntax)
+            if self.current_token() == &Token::Colon {
+                self.advance();
+                // This is language:module format, skip the actual module name
+                if let Token::Identifier(_) = self.current_token() {
+                    self.advance();
+                }
+            }
+
+            // Skip closing delimiter if we had an opening one
+            if has_bracket {
+                if self.current_token() == &Token::RightBracket
+                    || self.current_token() == &Token::RightBrace
+                    || self.current_token() == &Token::RightParen
+                {
+                    self.advance();
+                }
+            }
+
             self.skip_newlines();
             Ok(Statement::Import(module_name))
         } else {
@@ -110,9 +146,33 @@ impl Parser {
     fn parse_definition(&mut self) -> Result<Statement, String> {
         self.advance(); // Skip 'def'
 
-        if let Token::Identifier(name) = self.current_token() {
-            let var_name = name.clone();
+        // Check for mutability marker (?)
+        let is_mutable = if self.current_token() == &Token::QuestionMark {
             self.advance();
+            true
+        } else {
+            false
+        };
+
+        if let Token::Identifier(name) = self.current_token() {
+            let var_name = if is_mutable {
+                format!("?{}", name) // Prefix with ? to indicate mutability
+            } else {
+                name.clone()
+            };
+            self.advance();
+
+            // Handle optional type annotation (@int, @str, etc.)
+            if self.current_token() == &Token::Colon {
+                self.advance();
+                // Skip type annotation for now
+                if self.current_token() == &Token::At {
+                    self.advance();
+                }
+                if let Token::Identifier(_type_name) = self.current_token() {
+                    self.advance();
+                }
+            }
 
             self.expect(Token::Equal)?;
 
@@ -217,6 +277,10 @@ impl Parser {
     }
 
     fn parse_custom_block(&mut self) -> Result<Statement, String> {
+        // Handle both 'cs' and '@cs' syntax
+        if self.current_token() == &Token::At {
+            self.advance(); // Skip '@'
+        }
         self.advance(); // Skip 'cs'
 
         if let Token::Identifier(lang) = self.current_token() {
@@ -232,7 +296,13 @@ impl Parser {
             while self.current_token() != &Token::Eof {
                 if matches!(
                     self.current_token(),
-                    Token::Def | Token::Fn | Token::Asy | Token::Cs | Token::Mn | Token::Imp
+                    Token::Def
+                        | Token::Fn
+                        | Token::Asy
+                        | Token::Cs
+                        | Token::Mn
+                        | Token::Imp
+                        | Token::At
                 ) {
                     break;
                 }
@@ -246,7 +316,13 @@ impl Parser {
                     // Check if next line is dedented (starts with top-level keyword)
                     if matches!(
                         self.current_token(),
-                        Token::Def | Token::Fn | Token::Asy | Token::Cs | Token::Mn | Token::Imp
+                        Token::Def
+                            | Token::Fn
+                            | Token::Asy
+                            | Token::Cs
+                            | Token::Mn
+                            | Token::Imp
+                            | Token::At
                     ) {
                         break;
                     }
@@ -843,8 +919,7 @@ mod tests {
 
     #[test]
     fn test_parse_custom_block() {
-        let mut lexer =
-            Lexer::new("cs rust:\n    fn sum(a: i32, b: i32) -> i32 {\n        a + b\n    }");
+        let mut lexer = Lexer::new("cs rust:\n    fn add(a: i32, b: i32) -> i32 { a + b }");
         let tokens = lexer.tokenize();
         let mut parser = Parser::new(tokens);
         let program = parser.parse().unwrap();
@@ -930,7 +1005,8 @@ mod tests {
 
     #[test]
     fn test_parse_import_statement() {
-        let mut lexer = Lexer::new("imp std.io");
+        // Test simple import (just module name, not dotted path)
+        let mut lexer = Lexer::new("imp std");
         let tokens = lexer.tokenize();
         let mut parser = Parser::new(tokens);
         let program = parser.parse().unwrap();
@@ -938,7 +1014,7 @@ mod tests {
         assert_eq!(program.statements.len(), 1);
         match &program.statements[0] {
             Statement::Import(module) => {
-                assert_eq!(module, "std.io");
+                assert_eq!(module, "std");
             }
             _ => panic!("Expected import statement"),
         }

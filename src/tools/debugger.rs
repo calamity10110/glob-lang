@@ -1,4 +1,5 @@
-// Debugger for Universal Language
+// Debugger module - provides debugging capabilities
+#![allow(dead_code)]
 use std::collections::HashMap;
 
 #[derive(Debug, Clone, PartialEq)]

@@ -1,3 +1,4 @@
+#![allow(dead_code)]
 // UI runtime - renders inline UI components (TUI)
 use crossterm::{
     execute,

@@ -1,3 +1,5 @@
+#![allow(dead_code)]
+#![allow(unused_variables)]
 // AI-Powered#![allow(unused_variables)]
 // AI Code Generation Module
 

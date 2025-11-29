@@ -7,11 +7,11 @@ The language supports seamless integration with multiple programming languages t
 ### Syntax
 
 ```
-cs rust:
-    fn add(a: i32, b: i32) -> i32 { 
-        a + b 
+@cs rust:
+    fn add(a: i32, b: i32) -> i32 {
+        a + b
     }
-    
+
     fn fast_sum(data: &[i32]) -> i32 {
         data.iter().sum()
     }
@@ -29,7 +29,7 @@ cs rust:
 ```
 imp std.io
 
-cs rust:
+@cs rust:
     fn process_image(pixels: &mut [u8], width: usize, height: usize) {
         for i in 0..pixels.len() {
             pixels[i] = pixels[i].saturating_add(10);
@@ -47,10 +47,10 @@ fn main():
 ### Syntax
 
 ```
-cs python:
+@cs python:
     import numpy as np
     import pandas as pd
-    
+
     def analyze_data(data):
         df = pd.DataFrame(data)
         return df.describe().to_dict()
@@ -65,9 +65,9 @@ cs python:
 ### Example
 
 ```
-cs python:
+@cs python:
     import tensorflow as tf
-    
+
     def predict(model_path, input_data):
         model = tf.keras.models.load_model(model_path)
         return model.predict(input_data).tolist()
@@ -83,11 +83,11 @@ asy run_inference():
 ### Syntax
 
 ```
-cs js:
+@cs js:
     export function formatDate(timestamp) {
         return new Date(timestamp).toLocaleDateString();
     }
-    
+
     export async function fetchAPI(url) {
         const response = await fetch(url);
         return await response.json();
@@ -104,7 +104,7 @@ cs js:
 ### Example
 
 ```
-cs js:
+@cs js:
     export function processJSON(data) {
         return data.map(item => ({
             ...item,
@@ -124,17 +124,17 @@ fn main():
 ### Syntax
 
 ```
-cs ts:
+@cs ts:
     interface User {
         id: number;
         name: string;
         email: string;
     }
-    
+
     export function validateUser(user: User): boolean {
         return user.email.includes('@');
     }
-    
+
     export function getUsers(): User[] {
         return [
             { id: 1, name: "Alice", email: "alice@example.com" },
@@ -153,13 +153,13 @@ cs ts:
 ### Example
 
 ```
-cs ts:
+@cs ts:
     interface Config {
         apiKey: string;
         endpoint: string;
         timeout: number;
     }
-    
+
     export function createClient(config: Config) {
         return {
             get: async (path: string) => {
@@ -188,15 +188,15 @@ asy main():
 ### Syntax
 
 ```
-cs c:
+@cs c:
     #include <math.h>
-    
+
     double calculate_distance(double x1, double y1, double x2, double y2) {
         double dx = x2 - x1;
         double dy = y2 - y1;
         return sqrt(dx*dx + dy*dy);
     }
-    
+
     int fibonacci(int n) {
         return n <= 1 ? n : fibonacci(n-1) + fibonacci(n-2);
     }
@@ -212,9 +212,9 @@ cs c:
 ### Example
 
 ```
-cs c:
+@cs c:
     #include <string.h>
-    
+
     void reverse_string(char* str) {
         int len = strlen(str);
         for (int i = 0; i < len/2; i++) {
@@ -235,8 +235,8 @@ fn main():
 ### Syntax
 
 ```
-cs sql:
-    select 
+@cs sql:
+    select
         users.name,
         users.email,
         count(orders.id) as order_count
@@ -260,22 +260,22 @@ cs sql:
 ```
 imp db
 
-cs sql:
+@cs sql:
     create table if not exists users (
         id integer primary key,
         name text not null,
         email text unique not null,
         created_at timestamp default current_timestamp
     );
-    
-    insert into users (name, email) values 
+
+    insert into users (name, email) values
         ('Alice', 'alice@example.com'),
         ('Bob', 'bob@example.com');
 
 fn main():
     db.execute(sql.create_table)
     db.execute(sql.insert_users)
-    
+
     results = db.query("select * from users where name like 'A%'")
     for row in results:
         print(row.name, row.email)
@@ -299,14 +299,14 @@ js.process(copy data)
 
 ### Type Mapping
 
-| Universal | Rust | Python | JS/TS | C |
-|-----------|------|--------|-------|---|
-| int | i32 | int | number | int |
-| float | f64 | float | number | double |
-| str | String | str | string | char* |
-| bool | bool | bool | boolean | bool |
-| list | Vec<T> | list | Array | T* |
-| dict | HashMap | dict | Object | struct |
+| Universal | Rust    | Python | JS/TS   | C      |
+| --------- | ------- | ------ | ------- | ------ |
+| int       | i32     | int    | number  | int    |
+| float     | f64     | float  | number  | double |
+| str       | String  | str    | string  | char\* |
+| bool      | bool    | bool   | boolean | bool   |
+| list      | Vec<T>  | list   | Array   | T\*    |
+| dict      | HashMap | dict   | Object  | struct |
 
 ## Performance Considerations
 

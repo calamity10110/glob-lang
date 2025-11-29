@@ -1,4 +1,5 @@
 // Low-Power Optimizations for Embedded Systems
+#![allow(unused_variables)]
 
 use std::collections::HashMap;
 use std::time::{Duration, Instant};

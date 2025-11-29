@@ -1,3 +1,4 @@
+#![allow(dead_code)]
 // Math and science utilities
 use std::f64::consts::{E, PI};
 

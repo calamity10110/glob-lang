@@ -562,6 +562,32 @@ dependencies = [
 ]
 
 [[package]]
+name = "gul"
+version = "0.11.0"
+dependencies = [
+ "anyhow",
+ "async-trait",
+ "base64",
+ "clap",
+ "colored",
+ "criterion",
+ "crossterm",
+ "libloading",
+ "logos",
+ "num-complex",
+ "num-traits",
+ "pest",
+ "pest_derive",
+ "reqwest",
+ "rusqlite",
+ "serde",
+ "serde_json",
+ "thiserror",
+ "tokio",
+ "unicode-width",
+]
+
+[[package]]
 name = "h2"
 version = "0.3.27"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -1786,31 +1812,6 @@ name = "unicode-width"
 version = "0.1.14"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "7dd6e30e90baa6f72411720665d41d89b9a3d039dc45b8faea1ddd07f617f6af"
-
-[[package]]
-name = "universal-lang"
-version = "0.1.0"
-dependencies = [
- "anyhow",
- "async-trait",
- "clap",
- "colored",
- "criterion",
- "crossterm",
- "libloading",
- "logos",
- "num-complex",
- "num-traits",
- "pest",
- "pest_derive",
- "reqwest",
- "rusqlite",
- "serde",
- "serde_json",
- "thiserror",
- "tokio",
- "unicode-width",
-]
 
 [[package]]
 name = "url"

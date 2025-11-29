@@ -1,6 +1,6 @@
-# GLOB Language - Complete Syntax Guide (v0.11.0)
+# GUL Language - Complete Syntax Guide (v0.11.0)
 
-**GLOB** (Global Language for Optimized Building) - A modern, multi-paradigm programming language
+**GUL** (Glob Universal Language) - A modern, multi-paradigm programming language
 
 ---
 
@@ -22,9 +22,9 @@
 
 ## Basic Concepts
 
-### What is GLOB?
+### What is GUL?
 
-GLOB combines simplicity with power:
+GUL combines simplicity with power:
 
 - **Python-like** syntax (easy to read)
 - **Rust-like** safety (memory safe)
@@ -35,10 +35,10 @@ GLOB combines simplicity with power:
 ### Your First Program
 
 ```glob
-# hello.mn - Your first GLOB program
+# hello.mn - Your first GUL program
 
 mn main():
-    print("Hello, GLOB!")
+    print("Hello, GUL!")
 ```
 
 Run it: `glob run hello.mn`
@@ -122,7 +122,7 @@ fn get_cached(key):
 
 ## Flexible Import System
 
-GLOB supports multiple equivalent import syntaxes. Choose the style you prefer!
+GUL supports multiple equivalent import syntaxes. Choose the style you prefer!
 
 ### Format 1: Individual Imports
 
@@ -267,7 +267,7 @@ fn increment(@mut ?value):
 
 ## Annotations
 
-GLOB uses `@` prefix for annotations. Annotations provide type hints, optimization hints, and semantic information.
+GUL uses `@` prefix for annotations. Annotations provide type hints, optimization hints, and semantic information.
 
 ### Type Annotations
 
@@ -643,7 +643,7 @@ total = @sum(values)
 ## Complete Example
 
 ```glob
-# Complete GLOB program with new features
+# Complete GUL program with new features
 
 # Flexible imports
 imp [
@@ -758,4 +758,4 @@ mn main():
 
 ---
 
-**Ready to code in GLOB? Check out the examples in `examples/` directory!**
+**Ready to code in GUL? Check out the examples in `examples/` directory!**

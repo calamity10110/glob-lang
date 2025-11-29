@@ -1,3 +1,4 @@
+#![allow(dead_code)]
 // Block organizer - splits code into package blocks
 
 use crate::ast::{Program, Statement};

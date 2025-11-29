@@ -1,4 +1,4 @@
-# GLOB v0.11.0 - Feature Release Summary
+# GUL v0.11.0 - Feature Release Summary
 
 **Release Date:** 2025-11-28 11:00 PST  
 **Version:** 0.11.0  
@@ -227,7 +227,7 @@ result = @floor(3.7)
 ## 📝 Example: Complete Program
 
 ```glob
-# Data analysis with GLOB v0.11.0
+# Data analysis with GUL v0.11.0
 
 # Flexible imports
 imp [
@@ -336,7 +336,7 @@ Timestamp: 2025-11-28 11:00 PST
 
 ---
 
-**GLOB v0.11.0 documentation is complete!** 🎉
+**GUL v0.11.0 documentation is complete!** 🎉
 
 Next: Implement lexer and parser support for new features.
 

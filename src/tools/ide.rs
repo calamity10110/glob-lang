@@ -1,4 +1,5 @@
-// IDE infrastructure for Universal Language
+#![allow(dead_code)]
+// IDE integration module
 use std::collections::HashMap;
 use std::path::PathBuf;
 

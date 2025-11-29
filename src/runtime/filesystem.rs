@@ -1,3 +1,4 @@
+#![allow(dead_code)]
 // File system operations
 use std::fs::{self, File, Metadata, OpenOptions};
 use std::io::{BufRead, BufReader, Write};
