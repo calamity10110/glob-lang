@@ -1,0 +1,20 @@
+[package]
+name = "gul-website"
+version = "0.11.0"
+edition = "2021"
+authors = ["GUL Team"]
+description = "Official GUL Programming Language Website"
+
+[dependencies]
+dioxus = { version = "0.6", features = ["web", "router"] }
+dioxus-web = "0.6"
+dioxus-router = "0.6"
+serde = { version = "1.0", features = ["derive"] }
+serde_json = "1.0"
+
+[profile.release]
+opt-level = "z"
+lto = true
+codegen-units = 1
+panic = "abort"
+strip = true
