@@ -1,0 +1,12 @@
+/media/vu/512gb/blob/gul/web/target/release/deps/krates-0e0c6c74f1fdc5f6.d: /home/vu/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/krates-0.16.10/src/lib.rs /home/vu/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/krates-0.16.10/src/builder.rs /home/vu/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/krates-0.16.10/src/builder/features.rs /home/vu/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/krates-0.16.10/src/builder/index.rs /home/vu/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/krates-0.16.10/src/errors.rs /home/vu/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/krates-0.16.10/src/pkgspec.rs
+
+/media/vu/512gb/blob/gul/web/target/release/deps/libkrates-0e0c6c74f1fdc5f6.rlib: /home/vu/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/krates-0.16.10/src/lib.rs /home/vu/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/krates-0.16.10/src/builder.rs /home/vu/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/krates-0.16.10/src/builder/features.rs /home/vu/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/krates-0.16.10/src/builder/index.rs /home/vu/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/krates-0.16.10/src/errors.rs /home/vu/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/krates-0.16.10/src/pkgspec.rs
+
+/media/vu/512gb/blob/gul/web/target/release/deps/libkrates-0e0c6c74f1fdc5f6.rmeta: /home/vu/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/krates-0.16.10/src/lib.rs /home/vu/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/krates-0.16.10/src/builder.rs /home/vu/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/krates-0.16.10/src/builder/features.rs /home/vu/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/krates-0.16.10/src/builder/index.rs /home/vu/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/krates-0.16.10/src/errors.rs /home/vu/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/krates-0.16.10/src/pkgspec.rs
+
+/home/vu/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/krates-0.16.10/src/lib.rs:
+/home/vu/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/krates-0.16.10/src/builder.rs:
+/home/vu/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/krates-0.16.10/src/builder/features.rs:
+/home/vu/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/krates-0.16.10/src/builder/index.rs:
+/home/vu/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/krates-0.16.10/src/errors.rs:
+/home/vu/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/krates-0.16.10/src/pkgspec.rs:

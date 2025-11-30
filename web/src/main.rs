@@ -1,17 +1,17 @@
 // GUL Programming Language Official Website
-// Built with Dioxus - Simplified version
+// Built with Dioxus 0.5
 
 #![allow(non_snake_case)]
 
 use dioxus::prelude::*;
 
 fn main() {
-    dioxus::launch(App);
+    dioxus_web::launch(App);
 }
 
-#[component]
-fn App() -> Element {
-    rsx! {
+fn App(cx: Scope) -> Element {
+    cx.render(rsx! {
+        style { include_str!("../public/style.css") }
         div { class: "app",
             Header {}
             main { class: "main-content",
@@ -22,12 +22,11 @@ fn App() -> Element {
             }
             Footer {}
         }
-    }
+    })
 }
 
-#[component]
-fn Header() -> Element {
-    rsx! {
+fn Header(cx: Scope) -> Element {
+    cx.render(rsx! {
         header { class: "header",
             nav { class: "nav",
                 div { class: "logo",
@@ -36,20 +35,19 @@ fn Header() -> Element {
                 }
                 ul { class: "nav-links",
                     li { a { href: "/", "Home" } }
-                    li { a { href: "/learn", "Learn" } }
-                    li { a { href: "/docs", "Docs" } }
-                    li { a { href: "/playground", "Playground" } }
-                    li { a { href: "/community", "Community" } }
-                    li { a { href: "/download", class: "download-btn", "Download" } }
+                    li { a { href: "#learn", "Learn" } }
+                    li { a { href: "#docs", "Docs" } }
+                    li { a { href: "#playground", "Playground" } }
+                    li { a { href: "#community", "Community" } }
+                    li { a { href: "#download", class: "download-btn", "Download" } }
                 }
             }
         }
-    }
+    })
 }
 
-#[component]
-fn Hero() -> Element {
-    rsx! {
+fn Hero(cx: Scope) -> Element {
+    cx.render(rsx! {
         section { class: "hero",
             div { class: "hero-content",
                 h1 { class: "hero-title",
@@ -59,45 +57,43 @@ fn Hero() -> Element {
                     "Write once, run everywhere. GUL seamlessly integrates Rust, Python, JavaScript, C, and SQL in a single, elegant syntax."
                 }
                 div { class: "hero-buttons",
-                    a { href: "/learn", class: "btn btn-primary", "Get Started" }
-                    a { href: "/playground", class: "btn btn-secondary", "Try Online" }
+                    a { href: "#learn", class: "btn btn-primary", "Get Started" }
+                    a { href: "#playground", class: "btn btn-secondary", "Try Online" }
                 }
             }
             div { class: "hero-code",
                 pre { class: "code-block",
                     code {
-                        r#"main:
-    # Multi-language integration in one file
-    
-    # Rust for performance
-    @rust
-    fn fibonacci(n: u64) -> u64 {
-        match n {
-            0 => 0,
-            1 => 1,
-            _ => fibonacci(n-1) + fibonacci(n-2)
-        }
-    }
-    
-    # Python for data science
-    @python
-    import numpy as np
-    data = np.array([1, 2, 3, 4, 5])
-    
-    # JavaScript for web
-    @js
-    console.log("Hello from GUL!");
-"#
+                        "main:\n"
+                        "    # Multi-language integration in one file\n"
+                        "    \n"
+                        "    # Rust for performance\n"
+                        "    @rust\n"
+                        "    fn fibonacci(n: u64) -> u64 {{\n"
+                        "        match n {{\n"
+                        "            0 => 0,\n"
+                        "            1 => 1,\n"
+                        "            _ => fibonacci(n-1) + fibonacci(n-2)\n"
+                        "        }}\n"
+                        "    }}\n"
+                        "    \n"
+                        "    # Python for data science\n"
+                        "    @python\n"
+                        "    import numpy as np\n"
+                        "    data = np.array([1, 2, 3, 4, 5])\n"
+                        "    \n"
+                        "    # JavaScript for web\n"
+                        "    @js\n"
+                        "    console.log(\"Hello from GUL!\");\n"
                     }
                 }
             }
         }
-    }
+    })
 }
 
-#[component]
-fn Features() -> Element {
-    rsx! {
+fn Features(cx: Scope) -> Element {
+    cx.render(rsx! {
         section { class: "features",
             h2 { class: "section-title", "Why Choose GUL?" }
             div { class: "features-grid",
@@ -145,12 +141,11 @@ fn Features() -> Element {
                 }
             }
         }
-    }
+    })
 }
 
-#[component]
-fn QuickStart() -> Element {
-    rsx! {
+fn QuickStart(cx: Scope) -> Element {
+    cx.render(rsx! {
         section { class: "quick-start",
             h2 { class: "section-title", "Quick Start" }
             div { class: "quick-start-steps",
@@ -177,26 +172,24 @@ fn QuickStart() -> Element {
                 }
             }
         }
-    }
+    })
 }
 
-#[component]
-fn CallToAction() -> Element {
-    rsx! {
+fn CallToAction(cx: Scope) -> Element {
+    cx.render(rsx! {
         section { class: "cta",
             h2 { "Ready to Get Started?" }
             p { "Join thousands of developers building the future with GUL" }
             div { class: "cta-buttons",
-                a { href: "/download", class: "btn btn-large btn-primary", "Download GUL" }
-                a { href: "/learn", class: "btn btn-large btn-secondary", "Read the Docs" }
+                a { href: "#download", class: "btn btn-large btn-primary", "Download GUL" }
+                a { href: "#learn", class: "btn btn-large btn-secondary", "Read the Docs" }
             }
         }
-    }
+    })
 }
 
-#[component]
-fn Footer() -> Element {
-    rsx! {
+fn Footer(cx: Scope) -> Element {
+    cx.render(rsx! {
         footer { class: "footer",
             div { class: "footer-content",
                 div { class: "footer-section",
@@ -207,27 +200,27 @@ fn Footer() -> Element {
                 div { class: "footer-section",
                     h4 { "Resources" }
                     ul {
-                        li { a { href: "/docs", "Documentation" } }
-                        li { a { href: "/learn", "Tutorials" } }
-                        li { a { href: "/playground", "Playground" } }
-                        li { a { href: "https://github.com/gul-lang", "GitHub" } }
+                        li { a { href: "#docs", "Documentation" } }
+                        li { a { href: "#learn", "Tutorials" } }
+                        li { a { href: "#playground", "Playground" } }
+                        li { a { href: "https://github.com/gul-lang", target: "_blank", "GitHub" } }
                     }
                 }
                 div { class: "footer-section",
                     h4 { "Community" }
                     ul {
-                        li { a { href: "https://discord.gg/gul", "Discord" } }
-                        li { a { href: "https://reddit.com/r/gul", "Reddit" } }
-                        li { a { href: "https://twitter.com/gul_lang", "Twitter" } }
-                        li { a { href: "/community", "Forum" } }
+                        li { a { href: "https://discord.gg/gul", target: "_blank", "Discord" } }
+                        li { a { href: "https://reddit.com/r/gul", target: "_blank", "Reddit" } }
+                        li { a { href: "https://twitter.com/gul_lang", target: "_blank", "Twitter" } }
+                        li { a { href: "#community", "Forum" } }
                     }
                 }
                 div { class: "footer-section",
                     h4 { "Legal" }
                     ul {
-                        li { a { href: "/privacy", "Privacy Policy" } }
-                        li { a { href: "/terms", "Terms of Service" } }
-                        li { a { href: "/license", "License" } }
+                        li { a { href: "#privacy", "Privacy Policy" } }
+                        li { a { href: "#terms", "Terms of Service" } }
+                        li { a { href: "#license", "License" } }
                     }
                 }
             }
@@ -235,5 +228,5 @@ fn Footer() -> Element {
                 p { "© 2025 GUL Programming Language. All rights reserved." }
             }
         }
-    }
+    })
 }
