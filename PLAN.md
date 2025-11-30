@@ -120,8 +120,8 @@ PHASE 5 Update
 - [x] Add UI sprite syntax parsing (`^÷^[...]`)
 - [x] Implement scientific notation tokenization (units: `m/s`, `m/s^2`, etc.)
 - [x] Add support for multi-line comments `#[...]#`
-- [ ] Implement indentation tracking (Indent/Dedent tokens)
-- [x] Add comprehensive lexer tests (14 tests passing)
+- [x] Implement indentation tracking (Indent/Dedent tokens)
+- [x] Add comprehensive lexer tests (16 tests passing)
 
 ### 1.2 Parser Implementation
 
