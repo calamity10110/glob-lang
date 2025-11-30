@@ -134,13 +134,24 @@ impl Lexer {
 
     pub fn tokenize(&mut self) -> Vec<Token> {
         let mut tokens = Vec::new();
+        let mut indent_stack: Vec<usize> = vec![0]; // Stack to track indentation levels
+        let mut at_line_start = true; // Track if we're at the start of a line
+        let mut current_indent = 0; // Current line's indentation
 
         while let Some(ch) = self.current_char {
             match ch {
-                ' ' | '\t' => self.advance(),
+                ' ' | '\t' => {
+                    if at_line_start {
+                        // Count indentation at line start
+                        current_indent += if ch == '\t' { 4 } else { 1 };
+                    }
+                    self.advance();
+                }
                 '\n' => {
                     tokens.push(Token::Newline);
                     self.advance();
+                    at_line_start = true;
+                    current_indent = 0;
                 }
                 '#' => {
                     if self.peek(1) == Some('[') {
@@ -149,166 +160,206 @@ impl Lexer {
                         self.skip_comment();
                     }
                 }
-                '"' => tokens.push(self.read_string()),
-                '0'..='9' => tokens.push(self.read_number()),
-                'a'..='z' | 'A'..='Z' | '_' => tokens.push(self.read_identifier_or_unit()),
-                '^' => {
-                    // Check for UI sprite syntax: ^÷^[...]
-                    if self.peek(1) == Some('÷')
-                        && self.peek(2) == Some('^')
-                        && self.peek(3) == Some('[')
-                    {
-                        tokens.push(self.read_ui_sprite());
-                    } else {
-                        tokens.push(Token::Caret);
-                        self.advance();
-                    }
-                }
-                '+' => {
-                    tokens.push(Token::Plus);
-                    self.advance();
-                }
-                '-' => {
-                    if self.peek(1) == Some('>') {
-                        tokens.push(Token::Arrow);
-                        self.advance();
-                        self.advance();
-                    } else {
-                        tokens.push(Token::Minus);
-                        self.advance();
-                    }
-                }
-                '*' => {
-                    tokens.push(Token::Star);
-                    self.advance();
-                }
-                '/' => {
-                    tokens.push(Token::Slash);
-                    self.advance();
-                }
-                '%' => {
-                    tokens.push(Token::Percent);
-                    self.advance();
-                }
-                '(' => {
-                    tokens.push(Token::LeftParen);
-                    self.advance();
-                }
-                ')' => {
-                    tokens.push(Token::RightParen);
-                    self.advance();
-                }
-                '[' => {
-                    tokens.push(Token::LeftBracket);
-                    self.advance();
-                }
-                ']' => {
-                    tokens.push(Token::RightBracket);
-                    self.advance();
-                }
-                '{' => {
-                    tokens.push(Token::LeftBrace);
-                    self.advance();
-                }
-                '}' => {
-                    tokens.push(Token::RightBrace);
-                    self.advance();
-                }
-                ',' => {
-                    tokens.push(Token::Comma);
-                    self.advance();
-                }
-                ':' => {
-                    tokens.push(Token::Colon);
-                    self.advance();
-                }
-                ';' => {
-                    tokens.push(Token::Semicolon);
-                    self.advance();
-                }
-                '.' => {
-                    tokens.push(Token::Dot);
-                    self.advance();
-                }
-                '=' => {
-                    if self.peek(1) == Some('=') {
-                        tokens.push(Token::EqualEqual);
-                        self.advance();
-                        self.advance();
-                    } else {
-                        tokens.push(Token::Equal);
-                        self.advance();
-                    }
-                }
-                '!' => {
-                    if self.peek(1) == Some('=') {
-                        tokens.push(Token::BangEqual);
-                        self.advance();
-                        self.advance();
-                    } else {
-                        tokens.push(Token::Not);
-                        self.advance();
-                    }
-                }
-                '<' => {
-                    if self.peek(1) == Some('=') {
-                        tokens.push(Token::LessEqual);
-                        self.advance();
-                        self.advance();
-                    } else if self.peek(1) == Some('<') {
-                        tokens.push(Token::LessLess);
-                        self.advance();
-                        self.advance();
-                    } else {
-                        tokens.push(Token::Less);
-                        self.advance();
-                    }
-                }
-                '>' => {
-                    if self.peek(1) == Some('=') {
-                        tokens.push(Token::GreaterEqual);
-                        self.advance();
-                        self.advance();
-                    } else if self.peek(1) == Some('>') {
-                        tokens.push(Token::GreaterGreater);
-                        self.advance();
-                        self.advance();
-                    } else {
-                        tokens.push(Token::Greater);
-                        self.advance();
-                    }
-                }
-                '&' => {
-                    if self.peek(1) == Some('&') {
-                        tokens.push(Token::And);
-                        self.advance();
-                        self.advance();
-                    } else {
-                        tokens.push(Token::Ampersand);
-                        self.advance();
-                    }
-                }
-                '|' => {
-                    if self.peek(1) == Some('|') {
-                        tokens.push(Token::Or);
-                        self.advance();
-                        self.advance();
-                    } else {
-                        tokens.push(Token::Pipe);
-                        self.advance();
-                    }
-                }
+                _ => {
+                    // Process indentation when we encounter first non-whitespace character
+                    if at_line_start {
+                        at_line_start = false;
 
-                '?' => {
-                    tokens.push(Token::QuestionMark);
-                    self.advance();
+                        // Compare current indentation with stack
+                        let last_indent = *indent_stack.last().unwrap();
+
+                        if current_indent > last_indent {
+                            // Increased indentation - push INDENT
+                            indent_stack.push(current_indent);
+                            tokens.push(Token::Indent);
+                        } else if current_indent < last_indent {
+                            // Decreased indentation - pop DEDENT(s)
+                            while let Some(&stack_indent) = indent_stack.last() {
+                                if stack_indent <= current_indent {
+                                    break;
+                                }
+                                indent_stack.pop();
+                                tokens.push(Token::Dedent);
+                            }
+
+                            // Verify indentation matches a level in the stack
+                            if indent_stack.last() != Some(&current_indent) {
+                                // Indentation error - but we'll be lenient and adjust
+                                indent_stack.push(current_indent);
+                            }
+                        }
+                        // If current_indent == last_indent, no change needed
+                    }
+
+                    // Now process the actual character
+                    match ch {
+                        '"' => tokens.push(self.read_string()),
+                        '0'..='9' => tokens.push(self.read_number()),
+                        'a'..='z' | 'A'..='Z' | '_' => tokens.push(self.read_identifier_or_unit()),
+                        '^' => {
+                            // Check for UI sprite syntax: ^÷^[...]
+                            if self.peek(1) == Some('÷')
+                                && self.peek(2) == Some('^')
+                                && self.peek(3) == Some('[')
+                            {
+                                tokens.push(self.read_ui_sprite());
+                            } else {
+                                tokens.push(Token::Caret);
+                                self.advance();
+                            }
+                        }
+                        '+' => {
+                            tokens.push(Token::Plus);
+                            self.advance();
+                        }
+                        '-' => {
+                            if self.peek(1) == Some('>') {
+                                tokens.push(Token::Arrow);
+                                self.advance();
+                                self.advance();
+                            } else {
+                                tokens.push(Token::Minus);
+                                self.advance();
+                            }
+                        }
+                        '*' => {
+                            tokens.push(Token::Star);
+                            self.advance();
+                        }
+                        '/' => {
+                            tokens.push(Token::Slash);
+                            self.advance();
+                        }
+                        '%' => {
+                            tokens.push(Token::Percent);
+                            self.advance();
+                        }
+                        '(' => {
+                            tokens.push(Token::LeftParen);
+                            self.advance();
+                        }
+                        ')' => {
+                            tokens.push(Token::RightParen);
+                            self.advance();
+                        }
+                        '[' => {
+                            tokens.push(Token::LeftBracket);
+                            self.advance();
+                        }
+                        ']' => {
+                            tokens.push(Token::RightBracket);
+                            self.advance();
+                        }
+                        '{' => {
+                            tokens.push(Token::LeftBrace);
+                            self.advance();
+                        }
+                        '}' => {
+                            tokens.push(Token::RightBrace);
+                            self.advance();
+                        }
+                        ',' => {
+                            tokens.push(Token::Comma);
+                            self.advance();
+                        }
+                        ':' => {
+                            tokens.push(Token::Colon);
+                            self.advance();
+                        }
+                        ';' => {
+                            tokens.push(Token::Semicolon);
+                            self.advance();
+                        }
+                        '.' => {
+                            tokens.push(Token::Dot);
+                            self.advance();
+                        }
+                        '=' => {
+                            if self.peek(1) == Some('=') {
+                                tokens.push(Token::EqualEqual);
+                                self.advance();
+                                self.advance();
+                            } else {
+                                tokens.push(Token::Equal);
+                                self.advance();
+                            }
+                        }
+                        '!' => {
+                            if self.peek(1) == Some('=') {
+                                tokens.push(Token::BangEqual);
+                                self.advance();
+                                self.advance();
+                            } else {
+                                tokens.push(Token::Not);
+                                self.advance();
+                            }
+                        }
+                        '<' => {
+                            if self.peek(1) == Some('=') {
+                                tokens.push(Token::LessEqual);
+                                self.advance();
+                                self.advance();
+                            } else if self.peek(1) == Some('<') {
+                                tokens.push(Token::LessLess);
+                                self.advance();
+                                self.advance();
+                            } else {
+                                tokens.push(Token::Less);
+                                self.advance();
+                            }
+                        }
+                        '>' => {
+                            if self.peek(1) == Some('=') {
+                                tokens.push(Token::GreaterEqual);
+                                self.advance();
+                                self.advance();
+                            } else if self.peek(1) == Some('>') {
+                                tokens.push(Token::GreaterGreater);
+                                self.advance();
+                                self.advance();
+                            } else {
+                                tokens.push(Token::Greater);
+                                self.advance();
+                            }
+                        }
+                        '&' => {
+                            if self.peek(1) == Some('&') {
+                                tokens.push(Token::And);
+                                self.advance();
+                                self.advance();
+                            } else {
+                                tokens.push(Token::Ampersand);
+                                self.advance();
+                            }
+                        }
+                        '|' => {
+                            if self.peek(1) == Some('|') {
+                                tokens.push(Token::Or);
+                                self.advance();
+                                self.advance();
+                            } else {
+                                tokens.push(Token::Pipe);
+                                self.advance();
+                            }
+                        }
+                        '?' => {
+                            tokens.push(Token::QuestionMark);
+                            self.advance();
+                        }
+                        '@' => {
+                            tokens.push(Token::At);
+                            self.advance();
+                        }
+                        _ => self.advance(),
+                    }
                 }
-                '@' => {
-                    tokens.push(Token::At);
-                    self.advance();
-                }
-                _ => self.advance(),
             }
+        }
+
+        // Add final DEDENT tokens for any remaining indentation
+        while indent_stack.len() > 1 {
+            indent_stack.pop();
+            tokens.push(Token::Dedent);
         }
 
         tokens.push(Token::Eof);
@@ -881,5 +932,39 @@ mod tests {
         assert_eq!(tokens[5], Token::Identifier("int".to_string()));
         assert_eq!(tokens[6], Token::At);
         assert_eq!(tokens[7], Token::Identifier("global".to_string()));
+    }
+
+    #[test]
+    fn test_indentation_tracking() {
+        let code =
+            "def func():\n    x = 1\n    if x > 0:\n        print(x)\n        y = 2\n    return x";
+        let mut lexer = Lexer::new(code);
+        let tokens = lexer.tokenize();
+
+        // Find indent and dedent tokens
+        let indent_count = tokens.iter().filter(|t| matches!(t, Token::Indent)).count();
+        let dedent_count = tokens.iter().filter(|t| matches!(t, Token::Dedent)).count();
+
+        // Should have 2 indents (after func(): and after if:) and 2 dedents
+        assert_eq!(indent_count, 2, "Expected 2 INDENT tokens");
+        assert_eq!(dedent_count, 2, "Expected 2 DEDENT tokens");
+
+        // Verify token sequence includes proper indentation
+        assert!(tokens.contains(&Token::Indent));
+        assert!(tokens.contains(&Token::Dedent));
+    }
+
+    #[test]
+    fn test_nested_indentation() {
+        let code = "if a:\n    if b:\n        if c:\n            x = 1\n        y = 2\n    z = 3";
+        let mut lexer = Lexer::new(code);
+        let tokens = lexer.tokenize();
+
+        let indent_count = tokens.iter().filter(|t| matches!(t, Token::Indent)).count();
+        let dedent_count = tokens.iter().filter(|t| matches!(t, Token::Dedent)).count();
+
+        // Should have 3 indents and 3 dedents for nested blocks
+        assert_eq!(indent_count, 3);
+        assert_eq!(dedent_count, 3);
     }
 }
