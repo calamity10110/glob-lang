@@ -47,7 +47,10 @@ impl Parser {
     }
 
     fn skip_newlines(&mut self) {
-        while self.current_token() == &Token::Newline {
+        while matches!(
+            self.current_token(),
+            Token::Newline | Token::Indent | Token::Dedent
+        ) {
             self.advance();
         }
     }
