@@ -11,6 +11,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- **Phase 15 Started:** Website & Package Database
+  - Implemented multi-page website structure using `dioxus-router`
+  - Created Home, Docs, Blog, Community, and Download pages
+  - Updated website to use Dioxus 0.5 component syntax
 - **Phase 13 Complete:** TUI & Web IDE Integration
   - Implemented GulTuiIde with file browser, command palette, and editor infrastructure
   - Implemented GulWebIde with project management, file tree, terminal, and settings

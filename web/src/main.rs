@@ -4,50 +4,168 @@
 #![allow(non_snake_case)]
 
 use dioxus::prelude::*;
+use dioxus_router::prelude::*;
 
 fn main() {
-    dioxus_web::launch(App);
+    launch(App);
 }
 
-fn App(cx: Scope) -> Element {
-    cx.render(rsx! {
-        style { include_str!("../public/style.css") }
+#[derive(Routable, Clone)]
+#[rustfmt::skip]
+enum Route {
+    #[layout(Navbar)]
+        #[route("/")]
+        Home {},
+        #[route("/docs")]
+        Docs {},
+        #[route("/blog")]
+        Blog {},
+        #[route("/community")]
+        Community {},
+        #[route("/download")]
+        Download {},
+    #[end_layout]
+    #[route("/:..route")]
+    PageNotFound { route: Vec<String> },
+}
+
+fn App() -> Element {
+    rsx! {
+        Router::<Route> {}
+    }
+}
+
+#[component]
+fn Navbar() -> Element {
+    rsx! {
         div { class: "app",
             Header {}
             main { class: "main-content",
-                Hero {}
-                Features {}
-                QuickStart {}
-                CallToAction {}
+                Outlet::<Route> {}
             }
             Footer {}
         }
-    })
+    }
 }
 
-fn Header(cx: Scope) -> Element {
-    cx.render(rsx! {
+#[component]
+fn Header() -> Element {
+    rsx! {
         header { class: "header",
             nav { class: "nav",
-                div { class: "logo",
-                    h1 { "GUL" }
-                    span { class: "tagline", "Universal Language" }
+                Link { to: Route::Home {}, class: "logo-link",
+                    div { class: "logo",
+                        h1 { "GUL" }
+                        span { class: "tagline", "Universal Language" }
+                    }
                 }
                 ul { class: "nav-links",
-                    li { a { href: "/", "Home" } }
-                    li { a { href: "#learn", "Learn" } }
-                    li { a { href: "#docs", "Docs" } }
-                    li { a { href: "#playground", "Playground" } }
-                    li { a { href: "#community", "Community" } }
-                    li { a { href: "#download", class: "download-btn", "Download" } }
+                    li { Link { to: Route::Home {}, "Home" } }
+                    li { Link { to: Route::Docs {}, "Docs" } }
+                    li { Link { to: Route::Blog {}, "Blog" } }
+                    li { Link { to: Route::Community {}, "Community" } }
+                    li { Link { to: Route::Download {}, class: "download-btn", "Download" } }
                 }
             }
         }
-    })
+    }
 }
 
-fn Hero(cx: Scope) -> Element {
-    cx.render(rsx! {
+#[component]
+fn Home() -> Element {
+    rsx! {
+        Hero {}
+        Features {}
+        QuickStart {}
+        CallToAction {}
+    }
+}
+
+#[component]
+fn Docs() -> Element {
+    rsx! {
+        div { class: "page-container",
+            h1 { "Documentation" }
+            p { "Coming soon: Comprehensive documentation for GUL." }
+            div { class: "docs-grid",
+                div { class: "doc-card", h3 { "Getting Started" }, p { "Learn how to install and run GUL." } }
+                div { class: "doc-card", h3 { "Language Reference" }, p { "Detailed syntax and feature guide." } }
+                div { class: "doc-card", h3 { "Standard Library" }, p { "API reference for the standard library." } }
+            }
+        }
+    }
+}
+
+#[component]
+fn Blog() -> Element {
+    rsx! {
+        div { class: "page-container",
+            h1 { "Blog" }
+            p { "Latest news and updates from the GUL team." }
+            div { class: "blog-list",
+                div { class: "blog-post",
+                    h3 { "GUL v0.12.0 Released" }
+                    span { class: "date", "December 1, 2025" }
+                    p { "We are excited to announce the release of GUL v0.12.0 with complete IDE support!" }
+                }
+            }
+        }
+    }
+}
+
+#[component]
+fn Community() -> Element {
+    rsx! {
+        div { class: "page-container",
+            h1 { "Community" }
+            p { "Join the GUL community." }
+            div { class: "community-links",
+                a { href: "https://discord.gg/gul", class: "community-link", "Discord Server" }
+                a { href: "https://github.com/gul-lang", class: "community-link", "GitHub Repository" }
+                a { href: "https://twitter.com/gul_lang", class: "community-link", "Twitter" }
+            }
+        }
+    }
+}
+
+#[component]
+fn Download() -> Element {
+    rsx! {
+        div { class: "page-container",
+            h1 { "Download GUL" }
+            p { "Get the latest version of GUL for your platform." }
+            div { class: "download-options",
+                div { class: "download-card",
+                    h3 { "Linux" }
+                    code { "curl -sSf https://gul-lang.org/install.sh | sh" }
+                }
+                div { class: "download-card",
+                    h3 { "macOS" }
+                    code { "brew install gul-lang" }
+                }
+                div { class: "download-card",
+                    h3 { "Windows" }
+                    code { "winget install gul-lang" }
+                }
+            }
+        }
+    }
+}
+
+#[component]
+fn PageNotFound(route: Vec<String>) -> Element {
+    rsx! {
+        div { class: "page-container",
+            h1 { "Page Not Found" }
+            p { "The page you requested does not exist." }
+            Link { to: Route::Home {}, "Go back home" }
+        }
+    }
+}
+
+#[component]
+fn Hero() -> Element {
+    rsx! {
         section { class: "hero",
             div { class: "hero-content",
                 h1 { class: "hero-title",
@@ -57,8 +175,8 @@ fn Hero(cx: Scope) -> Element {
                     "Write once, run everywhere. GUL seamlessly integrates Rust, Python, JavaScript, C, and SQL in a single, elegant syntax."
                 }
                 div { class: "hero-buttons",
-                    a { href: "#learn", class: "btn btn-primary", "Get Started" }
-                    a { href: "#playground", class: "btn btn-secondary", "Try Online" }
+                    Link { to: Route::Docs {}, class: "btn btn-primary", "Get Started" }
+                    Link { to: Route::Home {}, class: "btn btn-secondary", "Try Online" }
                 }
             }
             div { class: "hero-code",
@@ -89,11 +207,12 @@ fn Hero(cx: Scope) -> Element {
                 }
             }
         }
-    })
+    }
 }
 
-fn Features(cx: Scope) -> Element {
-    cx.render(rsx! {
+#[component]
+fn Features() -> Element {
+    rsx! {
         section { class: "features",
             h2 { class: "section-title", "Why Choose GUL?" }
             div { class: "features-grid",
@@ -141,11 +260,12 @@ fn Features(cx: Scope) -> Element {
                 }
             }
         }
-    })
+    }
 }
 
-fn QuickStart(cx: Scope) -> Element {
-    cx.render(rsx! {
+#[component]
+fn QuickStart() -> Element {
+    rsx! {
         section { class: "quick-start",
             h2 { class: "section-title", "Quick Start" }
             div { class: "quick-start-steps",
@@ -172,37 +292,39 @@ fn QuickStart(cx: Scope) -> Element {
                 }
             }
         }
-    })
+    }
 }
 
-fn CallToAction(cx: Scope) -> Element {
-    cx.render(rsx! {
+#[component]
+fn CallToAction() -> Element {
+    rsx! {
         section { class: "cta",
             h2 { "Ready to Get Started?" }
             p { "Join thousands of developers building the future with GUL" }
             div { class: "cta-buttons",
-                a { href: "#download", class: "btn btn-large btn-primary", "Download GUL" }
-                a { href: "#learn", class: "btn btn-large btn-secondary", "Read the Docs" }
+                Link { to: Route::Download {}, class: "btn btn-large btn-primary", "Download GUL" }
+                Link { to: Route::Docs {}, class: "btn btn-large btn-secondary", "Read the Docs" }
             }
         }
-    })
+    }
 }
 
-fn Footer(cx: Scope) -> Element {
-    cx.render(rsx! {
+#[component]
+fn Footer() -> Element {
+    rsx! {
         footer { class: "footer",
             div { class: "footer-content",
                 div { class: "footer-section",
                     h4 { "GUL" }
                     p { "The Universal Programming Language" }
-                    p { class: "version", "Version 0.11.0" }
+                    p { class: "version", "Version 0.12.0" }
                 }
                 div { class: "footer-section",
                     h4 { "Resources" }
                     ul {
-                        li { a { href: "#docs", "Documentation" } }
-                        li { a { href: "#learn", "Tutorials" } }
-                        li { a { href: "#playground", "Playground" } }
+                        li { Link { to: Route::Docs {}, "Documentation" } }
+                        li { Link { to: Route::Docs {}, "Tutorials" } }
+                        li { Link { to: Route::Home {}, "Playground" } }
                         li { a { href: "https://github.com/gul-lang", target: "_blank", "GitHub" } }
                     }
                 }
@@ -212,7 +334,7 @@ fn Footer(cx: Scope) -> Element {
                         li { a { href: "https://discord.gg/gul", target: "_blank", "Discord" } }
                         li { a { href: "https://reddit.com/r/gul", target: "_blank", "Reddit" } }
                         li { a { href: "https://twitter.com/gul_lang", target: "_blank", "Twitter" } }
-                        li { a { href: "#community", "Forum" } }
+                        li { Link { to: Route::Community {}, "Forum" } }
                     }
                 }
                 div { class: "footer-section",
@@ -228,5 +350,5 @@ fn Footer(cx: Scope) -> Element {
                 p { "© 2025 GUL Programming Language. All rights reserved." }
             }
         }
-    })
+    }
 }
