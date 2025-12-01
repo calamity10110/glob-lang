@@ -1,0 +1,5 @@
+/media/vu/512gb/blob/gul/web/target/debug/deps/spinning-1f78bd37b281a91c.d: /home/vu/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/spinning-0.1.0/src/lib.rs
+
+/media/vu/512gb/blob/gul/web/target/debug/deps/libspinning-1f78bd37b281a91c.rmeta: /home/vu/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/spinning-0.1.0/src/lib.rs
+
+/home/vu/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/spinning-0.1.0/src/lib.rs:

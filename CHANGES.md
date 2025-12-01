@@ -7,6 +7,40 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [0.12.1] - 2025-12-01 12:12:35 PST
+
+### Added
+
+- **CI/CD Infrastructure**
+  - Created GitHub Actions workflow (`.github/workflows/ci.yml`)
+  - Automated testing across Linux, macOS, and Windows
+  - Automated linting with rustfmt and clippy
+  - Security auditing with cargo-audit
+  - Comprehensive code review report (`CODE_REVIEW_REPORT.md`)
+
+### Fixed
+
+- **Code Quality**
+  - Fixed unused `peek` method warning in `src/parser.rs`
+  - Replaced direct token indexing with `peek()` method call
+  - Improved code consistency in parser lookahead logic
+
+### Documentation
+
+- **Code Review Report**
+  - Comprehensive analysis of code quality
+  - Documentation coverage assessment
+  - CI/CD implementation plan
+  - Prioritized improvement roadmap
+
+### Changed
+
+- Parser now uses `peek(1)` instead of direct array indexing
+- All 347 tests still passing (100%)
+- Zero compiler warnings
+
+---
+
 ## [0.12.0] - 2025-12-01
 
 ### Added

@@ -1,0 +1,3 @@
+fn({type error}, Vec<String>) -> Option<VNode> {PageNotFound}
+fn({type error}, Vec<String>) -> Option<VNode> {PageNotFound}: ComponentFunction<_, _>
+ComponentFunction<Rc<Cell<RouterConfig<Route>>>>

@@ -1,0 +1,13 @@
+/media/vu/512gb/blob/gul/web/target/debug/deps/dioxus_web-0edb6674c906c429.d: /home/vu/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/dioxus-web-0.5.6/src/lib.rs /home/vu/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/dioxus-web-0.5.6/src/cfg.rs /home/vu/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/dioxus-web-0.5.6/src/dom.rs /home/vu/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/dioxus-web-0.5.6/src/event.rs /home/vu/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/dioxus-web-0.5.6/src/launch.rs /home/vu/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/dioxus-web-0.5.6/src/mutations.rs /home/vu/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/dioxus-web-0.5.6/src/eval.rs /home/vu/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/dioxus-web-0.5.6/src/file_engine.rs /home/vu/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/dioxus-web-0.5.6/src/hot_reload.rs
+
+/media/vu/512gb/blob/gul/web/target/debug/deps/libdioxus_web-0edb6674c906c429.rmeta: /home/vu/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/dioxus-web-0.5.6/src/lib.rs /home/vu/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/dioxus-web-0.5.6/src/cfg.rs /home/vu/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/dioxus-web-0.5.6/src/dom.rs /home/vu/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/dioxus-web-0.5.6/src/event.rs /home/vu/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/dioxus-web-0.5.6/src/launch.rs /home/vu/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/dioxus-web-0.5.6/src/mutations.rs /home/vu/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/dioxus-web-0.5.6/src/eval.rs /home/vu/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/dioxus-web-0.5.6/src/file_engine.rs /home/vu/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/dioxus-web-0.5.6/src/hot_reload.rs
+
+/home/vu/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/dioxus-web-0.5.6/src/lib.rs:
+/home/vu/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/dioxus-web-0.5.6/src/cfg.rs:
+/home/vu/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/dioxus-web-0.5.6/src/dom.rs:
+/home/vu/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/dioxus-web-0.5.6/src/event.rs:
+/home/vu/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/dioxus-web-0.5.6/src/launch.rs:
+/home/vu/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/dioxus-web-0.5.6/src/mutations.rs:
+/home/vu/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/dioxus-web-0.5.6/src/eval.rs:
+/home/vu/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/dioxus-web-0.5.6/src/file_engine.rs:
+/home/vu/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/dioxus-web-0.5.6/src/hot_reload.rs:

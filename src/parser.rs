@@ -458,10 +458,9 @@ impl Parser {
         // Check if this is an assignment (identifier = expression)
         if let Token::Identifier(name) = self.current_token() {
             let var_name = name.clone();
-            let next_pos = self.position + 1;
 
             // Look ahead to see if next token is '='
-            if next_pos < self.tokens.len() && self.tokens[next_pos] == Token::Equal {
+            if self.peek(1) == &Token::Equal {
                 // This is an assignment
                 self.advance(); // Skip identifier
                 self.advance(); // Skip '='

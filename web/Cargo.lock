@@ -1015,6 +1015,7 @@ name = "gul-website"
 version = "0.11.0"
 dependencies = [
  "dioxus",
+ "dioxus-router",
  "dioxus-web",
  "serde",
  "serde_json",
