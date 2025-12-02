@@ -1,0 +1,54 @@
+{
+  "cli_version": "0.7.1 (03ab7fa)",
+  "rust_version": "rustc 1.91.1 (ed61e7d7e 2025-11-07)",
+  "assets": {
+    "assets": {
+      "/media/vu/512gb/blob/gul/web/public/index.html": [
+        {
+          "absolute_source_path": "/media/vu/512gb/blob/gul/web/public/index.html",
+          "bundled_path": "../index.html",
+          "options": {
+            "add_hash": false,
+            "variant": "Unknown"
+          }
+        }
+      ],
+      "/media/vu/512gb/blob/gul/web/public/style.css": [
+        {
+          "absolute_source_path": "/media/vu/512gb/blob/gul/web/public/style.css",
+          "bundled_path": "../style.css",
+          "options": {
+            "add_hash": false,
+            "variant": "Unknown"
+          }
+        }
+      ],
+      "/media/vu/512gb/blob/gul/web/target/dx/gul-website/release/web/public/wasm/gul-website.js": [
+        {
+          "absolute_source_path": "/media/vu/512gb/blob/gul/web/target/dx/gul-website/release/web/public/wasm/gul-website.js",
+          "bundled_path": "gul-website-dxh327211ad762274.js",
+          "options": {
+            "add_hash": true,
+            "variant": {
+              "Js": {
+                "minify": true,
+                "preload": true,
+                "static_head": false
+              }
+            }
+          }
+        }
+      ],
+      "/media/vu/512gb/blob/gul/web/target/dx/gul-website/release/web/public/wasm/gul-website_bg.wasm": [
+        {
+          "absolute_source_path": "/media/vu/512gb/blob/gul/web/target/dx/gul-website/release/web/public/wasm/gul-website_bg.wasm",
+          "bundled_path": "gul-website_bg-dxhe2c18c89ae6bde24.wasm",
+          "options": {
+            "add_hash": true,
+            "variant": "Unknown"
+          }
+        }
+      ]
+    }
+  }
+}
