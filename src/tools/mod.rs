@@ -1,6 +1,8 @@
 // Tools module - IDE, formatter, linter, debugger, profiler, course
 
+pub mod code_executor;
 pub mod course;
+pub mod course_enhanced;
 pub mod course_tui;
 pub mod debugger;
 pub mod formatter;
