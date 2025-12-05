@@ -1,0 +1,188 @@
+# GUL v2.0 Syntax Examples
+# Demonstrating revised syntax with backward compatibility
+
+# ============================================
+# 1. MUTABILITY - New 'mut' keyword
+# ============================================
+
+# Immutable (default)
+name = "Alice"
+const age = 25
+const PI = 3.14159
+
+# Mutable - NEW syntax (recommended)
+mut count = 0
+mut total = 100
+
+# Mutable - LEGACY syntax (still works)
+?counter = 0
+?sum = 50
+
+# Both work the same:
+count = count + 1    # mut variable
+?counter = ?counter + 1  # legacy mutable
+
+
+# ============================================
+# 2. IMPORTS - New 'import' keyword
+# ============================================
+
+# NEW syntax (recommended)
+import std.io
+import std.http
+import python{numpy, pandas}
+import rust{tokio, serde}
+
+# Grouped imports
+import {
+    std.io,
+    std.math,
+    python{numpy, matplotlib}
+}
+
+# LEGACY syntax (still works)
+imp std.json
+imp python: scipy
+
+
+# ============================================
+# 3. TYPE ANNOTATIONS - Colon syntax
+# ============================================
+
+# NEW syntax (recommended)
+username: str = "Bob"
+user_age: int = 30
+price: float = 19.99
+active: bool = true
+
+# LEGACY syntax (still works)
+@str email = "bob@example.com"
+@int score = 100
+
+
+# ============================================
+# 4. FUNCTIONS - async keyword
+# ============================================
+
+# Sync function
+fn greet(name):
+    return "Hello, " + name
+
+# NEW async syntax (recommended)
+async fetch_data(url):
+    response = await http.get(url)
+    return response.json()
+
+# LEGACY async syntax (still works)
+@asy legacy_fetch(url):
+    return await http.get(url)
+
+
+# ============================================
+# 5. MAIN FUNCTION - Simplified
+# ============================================
+
+# NEW syntax (recommended)
+main():
+    print("Hello from GUL v2.0!")
+    
+    # Use new syntax
+    mut counter = 0
+    const max = 10
+    
+    while counter < max:
+        print(counter)
+        counter = counter + 1
+    
+    # Fetch data with async
+    data = await fetch_data("https://api.example.com")
+    print(data)
+
+# LEGACY syntax (still works)
+# mn main():
+#     print("Legacy syntax works too!")
+
+
+# ============================================
+# 6. MULTI-LANGUAGE - extern keyword
+# ============================================
+
+# NEW syntax (recommended)
+extern python {
+    fn analyze(data: list) -> float {
+        import numpy as np
+        return np.mean(data)
+    }
+}
+
+extern rust {
+    fn fast_compute(n: u64) -> u64 {
+        n * n
+    }
+}
+
+# LEGACY syntax (still works)
+@cs js:
+    export function formatDate(date) {
+        return new Date(date).toLocaleDateString()
+    }
+
+
+# ============================================
+# 7. UI COMPONENTS - Template literals
+# ============================================
+
+# NEW syntax (recommended)
+ui.render(`<button text="Click Me">`)
+ui.render(`<slider min=0 max=100 value=50>`)
+
+# LEGACY syntax (still works)
+ui.print(^÷^[button{text="Legacy"}])
+
+
+# ============================================
+# 8. COMPLETE EXAMPLE - All new syntax
+# ============================================
+
+import {
+    std.http,
+    python{numpy, pandas}
+}
+
+const API_URL = "https://api.example.com"
+mut request_count = 0
+
+async fetch_users() -> list:
+    mut retries = 0
+    const max_retries = 3
+    
+    while retries < max_retries:
+        try:
+            response = await http.get(API_URL + "/users")
+            request_count = request_count + 1
+            return response.json()
+        catch error:
+            retries = retries + 1
+    
+    return []
+
+extern python {
+    fn calculate_stats(users: list) -> map {
+        import pandas as pd
+        df = pd.DataFrame(users)
+        return {
+            "count": len(users),
+            "avg_age": df['age'].mean()
+        }
+    }
+}
+
+main():
+    print("GUL v2.0 - Modern Syntax Demo")
+    
+    users = await fetch_users()
+    stats = calculate_stats(users)
+    
+    print("Total users:", stats["count"])
+    print("Average age:", stats["avg_age"])
+    print("Requests made:", request_count)
